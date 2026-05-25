@@ -82,3 +82,8 @@ body {
 .auth-container a:hover {
   text-decoration: underline;
 }
+
+.desc{
+    margin-bottom: 20px; 
+    color:#555;
+}
