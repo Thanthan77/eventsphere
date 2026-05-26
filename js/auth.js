@@ -1,4 +1,4 @@
-import { supabase } from "../utils/supabaseClient.js";
+import { supabase } from "../utils/supabase.js";
 
 async function loginWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
