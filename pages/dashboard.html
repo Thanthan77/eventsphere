@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventSphere - Dashboard</title>
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+
+<body>
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <h2 class="logo">EventSphere</h2>
+
+      <nav>
+        <a href="#" class="active">Dashboard</a>
+        <a href="#">Mes événements</a>
+        <a href="#">Mes sondages</a>
+        <a href="#" id="logout">Déconnexion</a>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+      <header class="topbar">
+        <p id="user-email"></p>
+      </header>
+
+      <section class="cards">
+        <div class="card">
+          <h3>Événements</h3>
+          <p>Gère et crée tes événements.</p>
+        </div>
+
+        <div class="card">
+          <h3>Sondages</h3>
+          <p>Crée des sondages pour tes participants.</p>
+        </div>
+
+        <div class="card">
+          <h3>Participants</h3>
+          <p>Analyse les réponses et interactions.</p>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <script type="module" src="../js/dashboard.js"></script>
+</body>
+</html>
