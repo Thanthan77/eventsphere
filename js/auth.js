@@ -5,7 +5,7 @@ async function loginWithGoogle() {
     provider: "google",
     options: {
       redirectTo:
-        "https://purple-tree-0bed2d91e.7.azurestaticapps.net/pages/signup.html",
+        "https://purple-tree-0bed2d91e.7.azurestaticapps.net/pages/dashboard.html",
     },
   });
 
