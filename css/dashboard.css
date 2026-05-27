@@ -1,75 +1,111 @@
+/* Layout du dashboard */
 .dashboard-section {
-  display: flex;
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* 2 colonnes à gauche, 1 à droite */
   gap: 30px;
+  margin-top: 25px;
 }
 
-/*  Mes événements */
+/* Mes événements */
 .events-list {
-  flex: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 cartes par ligne */
+  gap: 20px;
 }
 
 .events-list h2 {
-  margin-bottom: 15px;
+  grid-column: span 2; /* Le titre prend toute la largeur */
+  margin-bottom: 10px;
   color: #333;
 }
 
 .event-card {
   background: white;
-  padding: 20px;
+  padding: 16px;
   border-radius: 12px;
   border: 1px solid #e5e5e5;
-  margin-bottom: 15px;
   transition: 0.2s;
+  min-height: 140px; /* compact */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .event-card:hover {
   border-color: #4a2cff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .event-card h3 {
   color: #4a2cff;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
+  font-size: 16px;
 }
 
 .event-meta {
-  font-size: 13px;
+  font-size: 12px;
   color: #777;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .event-card button {
-  padding: 8px 14px;
+  padding: 6px 10px;
   background: #4a2cff;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 13px;
+  align-self: flex-start;
 }
 
-/*  Sondages récents */
+/* Sondage Récent*/
 .polls-list {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.polls-list h2 {
+  margin-bottom: 10px;
+  color: #333;
 }
 
 .poll-card {
   background: white;
-  padding: 18px;
+  padding: 14px;
   border-radius: 12px;
   border: 1px solid #e5e5e5;
-  margin-bottom: 15px;
+  min-height: 110px; /* compact */
 }
 
 .poll-card h4 {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   color: #333;
+  font-size: 15px;
 }
 
 .poll-card button {
-  padding: 8px 14px;
+  padding: 6px 10px;
   background: #4a2cff;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 13px;
+}
+
+/* Responsive design */
+@media (max-width: 900px) {
+  .dashboard-section {
+    grid-template-columns: 1fr;
+  }
+
+  .events-list {
+    grid-template-columns: 1fr;
+  }
+
+  .events-list h2 {
+    grid-column: span 1;
+  }
 }
