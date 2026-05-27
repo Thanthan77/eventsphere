@@ -1,0 +1,72 @@
+.events-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-btn {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+}
+
+.filter-btn.active {
+  background: #4a2cff;
+  color: white;
+  border-color: #4a2cff;
+}
+
+.create-btn {
+  padding: 10px 16px;
+  background: #4a2cff;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.event-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e5e5e5;
+  transition: 0.2s;
+}
+
+.event-card:hover {
+  border-color: #4a2cff;
+}
+
+.event-card h3 {
+  color: #4a2cff;
+  margin-bottom: 6px;
+}
+
+.event-meta {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.event-card button {
+  padding: 8px 14px;
+  background: #4a2cff;
+  color: white;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}

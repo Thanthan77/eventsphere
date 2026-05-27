@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes événements - EventSphere</title>
+  <link rel="stylesheet" href="../css/general.css">
+  <link rel="stylesheet" href="../css/events.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <h2>EventSphere</h2>
+    <nav>
+      <a href="dashboard.html">Accueil</a>
+      <a href="events.html" class="active">Mes événements</a>
+      <a href="polls.html">Mes sondages</a>
+    </nav>
+    <button id="logout" class="logout-btn">Déconnexion</button>
+  </aside>
+
+  <main class="content">
+
+    <div class="topbar">
+      <input class="search-bar" placeholder="Rechercher...">
+      <div class="avatar" id="avatar"></div>
+    </div>
+
+    <div class="events-header">
+      <h2>Mes événements</h2>
+
+      <div class="filters">
+        <button class="filter-btn active">Tous</button>
+        <button class="filter-btn">Privé</button>
+        <button class="filter-btn">Public</button>
+      </div>
+
+      <button class="create-btn">+ Créer un événement</button>
+    </div>
+
+    <div class="event-grid">
+
+      <div class="event-card">
+        <h3>Anniversaire Marie</h3>
+        <p>Fête d'anniversaire surprise pour Marie.</p>
+        <p class="event-meta">12 participants</p>
+        <button>Ouvrir</button>
+      </div>
+
+      <div class="event-card">
+        <h3>Sortie Ski</h3>
+        <p>Week-end ski dans les Alpes.</p>
+        <p class="event-meta">8 participants</p>
+        <button>Ouvrir</button>
+      </div>
+
+      <div class="event-card">
+        <h3>Soirée Jeux</h3>
+        <p>Soirée jeux de société.</p>
+        <p class="event-meta">6 participants</p>
+        <button>Ouvrir</button>
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+<script type="module" src="../js/pages/events.js"></script>
+<script type="module" src="../js/pages/profil.js"></script>
+</body>
+</html>

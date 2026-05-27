@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mes sondages - EventSphere</title>
+  <link rel="stylesheet" href="../css/general.css">
+  <link rel="stylesheet" href="../css/polls.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <h2>EventSphere</h2>
+    <nav>
+      <a href="dashboard.html">Accueil</a>
+      <a href="events.html">Mes événements</a>
+      <a href="polls.html" class="active">Mes sondages</a>
+    </nav>
+    <button id="logout" class="logout-btn">Déconnexion</button>
+  </aside>
+
+  <main class="content">
+
+    <div class="topbar">
+      <input class="search-bar" placeholder="Rechercher...">
+      <div class="avatar" id="avatar"></div>
+    </div>
+
+    <div class="polls-header">
+      <h2>Mes sondages</h2>
+
+      <div class="poll-filters">
+        <button class="filter-btn active">Tous</button>
+        <button class="filter-btn">Ouverts</button>
+        <button class="filter-btn">Fermés</button>
+      </div>
+    </div>
+
+    <div class="poll-card">
+      <h3>Quelle date pour l’anniversaire ?</h3>
+      <div class="poll-tags">
+        <span class="tag">date</span>
+        <span class="tag">ouvert</span>
+      </div>
+      <p>12 votes</p>
+      <button>Voter</button>
+    </div>
+
+    <div class="poll-card">
+      <h3>Où organiser la fête ?</h3>
+      <div class="poll-tags">
+        <span class="tag">lieu</span>
+        <span class="tag">ouvert</span>
+      </div>
+      <p>11 votes</p>
+      <button>Voter</button>
+    </div>
+
+    <div class="poll-card">
+      <h3>Station de ski préférée</h3>
+      <div class="poll-tags">
+        <span class="tag">lieu</span>
+        <span class="tag">ouvert</span>
+      </div>
+      <p>8 votes</p>
+      <button>Voter</button>
+    </div>
+
+  </main>
+
+</div>
+<script type="module" src="../js/pages/profil.js"></script>
+<script type="module" src="../js/pages/logout.js"></script>
+</body>
+</html>

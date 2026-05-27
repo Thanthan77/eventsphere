@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paramètres - EventSphere</title>
+  <link rel="stylesheet" href="../css/general.css">
+  <link rel="stylesheet" href="../css/settings.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <h2>EventSphere</h2>
+    <nav>
+      <a href="dashboard.html">Accueil</a>
+      <a href="events.html">Mes événements</a>
+      <a href="polls.html">Mes sondages</a>
+    </nav>
+    <button id="logout" class="logout-btn">Déconnexion</button>
+  </aside>
+
+  <main class="content">
+
+    <div class="topbar">
+      <input class="search-bar" placeholder="Rechercher...">
+      <div class="avatar" id="avatar"></div>
+    </div>
+
+    <div class="settings-container">
+
+      <div class="profile-header">
+        <div class="profile-avatar">E</div>
+        <div>
+          <h3>ethan.chea</h3>
+          <p>ethan.chea@icloud.com</p>
+        </div>
+      </div>
+
+      <label>Nom</label>
+      <input type="text" value="ethan.chea">
+
+      <label>Email</label>
+      <input type="email" value="ethan.chea@icloud.com">
+
+      <button class="save-btn">Enregistrer</button>
+
+    </div>
+
+  </main>
+
+</div>
+<script type="module" src="../js/pages/profil.js"></script>
+<script type="module" src="../js/pages/logout.js"></script>
+</body>
+</html>
