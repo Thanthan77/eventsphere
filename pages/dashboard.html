@@ -25,26 +25,56 @@
 
     <!-- MAIN CONTENT -->
     <main class="content">
-      <header class="topbar">
-        <p id="user-email"></p>
-      </header>
+      <div class="topbar">
+      <input class="search-bar" placeholder="Rechercher...">
+      <div class="avatar">E</div>
+    </div>
 
-      <section class="cards">
-        <div class="card">
-          <h3>Événements</h3>
-          <p>Gère et crée tes événements.</p>
+    <div class="dashboard-section">
+
+      <div class="events-list">
+        <h2>Mes événements</h2>
+
+        <div class="event-card">
+          <h3>Anniversaire Marie</h3>
+          <p class="event-meta">Privé — 12 participants</p>
+          <p>Fête d'anniversaire surprise pour Marie.</p>
+          <button>Ouvrir</button>
         </div>
 
-        <div class="card">
-          <h3>Sondages</h3>
-          <p>Crée des sondages pour tes participants.</p>
+        <div class="event-card">
+          <h3>Réunion de famille</h3>
+          <p class="event-meta">Privé — 20 participants</p>
+          <p>Planification de la réunion annuelle de la famille.</p>
+          <button>Ouvrir</button>
+
         </div>
 
-        <div class="card">
-          <h3>Participants</h3>
-          <p>Analyse les réponses et interactions.</p>
+        <div class="polls-list">
+        <h2>Sondages récents</h2>
+
+        <div class="poll-card">
+          <h4>Quelle date pour l’anniversaire ?</h4>
+          <p>12 votes</p>
+          <button>Voter</button>
         </div>
-      </section>
+
+        <div class="poll-card">
+          <h4>Où organiser la fête ?</h4>
+          <p>11 votes</p>
+          <button>Voter</button>
+        </div>
+
+        <div class="poll-card">
+          <h4>Station de ski préférée</h4>
+          <p>8 votes</p>
+          <button>Voter</button>
+        </div>
+
+      </div>
+
+    </div>
+
     </main>
 
   </div>
