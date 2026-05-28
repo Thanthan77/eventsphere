@@ -74,7 +74,7 @@ async function loadEvents() {
     `;
 
     card.querySelector(".open-event-btn").addEventListener("click", () => {
-      window.location.href = `pages/eventDetails.html?id=${event.id}`;
+      window.location.href = `eventDetails.html?id=${event.id}`;
     });
 
     grid.appendChild(card);
