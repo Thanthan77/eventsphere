@@ -25,7 +25,7 @@ async function init() {
         return;
       }
 
-      const { error } = await signup(email, password);
+      const { error } = await signup(email, password, username);
 
       if (error) {
         alert(error.message);
