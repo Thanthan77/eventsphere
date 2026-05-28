@@ -1,17 +1,21 @@
 import { supabase } from "../utils/supabase.js";
 
-
-export async function signup(email, password) {
+export async function signup(email, password, username) {
   return await supabase.auth.signUp({
     email,
-    password
+    password,
+    options: {
+      data: {
+        display_name: username,
+      },
+    },
   });
 }
 
 export async function login(email, password) {
   return await supabase.auth.signInWithPassword({
     email,
-    password
+    password,
   });
 }
 
