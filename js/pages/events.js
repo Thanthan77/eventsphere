@@ -5,7 +5,7 @@ import { createEvent, getEvents } from "../service/events.js";
 console.log("events.js chargé !");
 
 async function init() {
-  await requireAuth();
+  //await requireAuth();
 
   const user = await getUser();
   // Charger les événements
