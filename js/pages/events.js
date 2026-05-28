@@ -20,36 +20,49 @@ async function init() {
   });
 
   // Sauvegarder un événement
-  document.getElementById("save-event-btn").addEventListener("click", async () => {
-    const title = document.getElementById("event-title").value;
-    const description = document.getElementById("event-description").value;
-    const type = document.getElementById("event-type").value;
+  document
+    .getElementById("save-event-btn")
+    .addEventListener("click", async () => {
+      const title = document.getElementById("event-title").value;
+      const description = document.getElementById("event-description").value;
+      const type = document.getElementById("event-type").value;
 
-    const { error } = await createEvent(
-      title,
-      description,
-      type === "private",
-      user.id
-    );
+      const { error } = await createEvent(
+        title,
+        description,
+        type === "private",
+        user.id,
+      );
 
-    if (error) {
-      alert("Erreur lors de la création");
-      return;
-    }
+      if (error) {
+        alert("Erreur lors de la création");
+        return;
+      }
 
-    alert("Événement créé !");
-    document.getElementById("create-event-modal").classList.add("hidden");
-    await loadEvents();
-  });
+      alert("Événement créé !");
+      document.getElementById("create-event-modal").classList.add("hidden");
+      await loadEvents();
+    });
 }
 
 async function loadEvents() {
   const grid = document.querySelector(".event-grid");
   grid.innerHTML = ""; // reset
 
-  const { data: events } = await getEvents();
+  const { data: events, error } = await getEvents();
 
-  events.forEach(event => {
+  if(error) {
+    console.error("Erreur Supabase :", error);
+    grid.innerHTML = "<p>Impossible de charger les événements.</p>";
+    return;
+  }
+
+  if(!events || events.length === 0){
+    grid.innerHTML = "<p>Aucun événement pour le moment.</p>";
+    return;
+  }
+
+  events.forEach((event) =>{
     const card = document.createElement("div");
     card.classList.add("event-card");
 
