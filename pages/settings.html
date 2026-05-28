@@ -31,27 +31,28 @@
     <div class="settings-container">
 
       <div class="profile-header">
-        <div class="profile-avatar">E</div>
+        <div class="profile-avatar" id="profile-avatar"></div>
         <div>
-          <h3>ethan.chea</h3>
-          <p>ethan.chea@icloud.com</p>
+          <h3 id="profile-name"></h3>
+          <p id="profile-email"></p>
         </div>
       </div>
 
       <label>Nom</label>
-      <input type="text" value="ethan.chea">
+      <input type="text" id="display-name">
 
       <label>Email</label>
-      <input type="email" value="ethan.chea@icloud.com">
+      <input type="email" id="email" disabled>
 
-      <button class="save-btn">Enregistrer</button>
+      <button class="save-btn" id="save-btn">Enregistrer</button>
 
     </div>
 
   </main>
 
 </div>
-<script type="module" src="../js/pages/profil.js"></script>
+<script type="module" src="../js/pages/settings.js"></script>
 <script type="module" src="../js/pages/logout.js"></script>
+<script type="module" src="../js/pages/profil.js"></script>
 </body>
 </html>
