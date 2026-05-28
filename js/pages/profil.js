@@ -1,5 +1,5 @@
 import { requireAuth } from "../service/session.js";
-import { getUser, extractDisplayName } from "../service/user.js";
+import { getUser, extractUsername, extractUsername } from "../service/user.js";
 
 async function init() {
   await requireAuth();
@@ -8,9 +8,9 @@ async function init() {
   const avatar = document.getElementById("avatar");
 
   // Récupérer le display_name proprement
-  const displayName = extractDisplayName(user);
+  const username = extractUsername(user);
 
-  const source = displayName || user.email;
+  const source = username || user.email;
   const firstLetter = source.charAt(0).toUpperCase();
 
   avatar.textContent = firstLetter;

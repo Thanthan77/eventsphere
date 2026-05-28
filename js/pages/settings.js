@@ -1,4 +1,4 @@
-import { getUser, extractDisplayName, updateUser } from "../service/user.js";
+import { getUser, extractUsername, updateUser } from "../service/user.js";
 
 async function init() {
   const user = await getUser();
@@ -8,7 +8,7 @@ async function init() {
   document.getElementById("profile-email").textContent = user.email;
 
   // Display name
-  const name = extractDisplayName(user);
+  const name = extractUsername(user);
   document.getElementById("display-name").value = name || "";
   document.getElementById("profile-name").textContent = name || "Nom non défini";
 }
