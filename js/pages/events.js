@@ -1,13 +1,11 @@
 import { requireAuth } from "../service/session.js";
-import { getUser, extractDisplayName } from "../service/user.js";
+import { getUser, extractUsername } from "../service/user.js";
 import { createEvent, getEvents } from "../service/events.js";
 
 async function init() {
   await requireAuth();
 
   const user = await getUser();
-
-
   // Charger les événements
   await loadEvents();
 
