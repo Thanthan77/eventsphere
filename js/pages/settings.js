@@ -10,14 +10,18 @@ async function init() {
   // Display name
   const name = extractUsername(user);
   document.getElementById("display-name").value = name || "";
-  document.getElementById("profile-name").textContent = name || "Nom non défini";
+  document.getElementById("profile-name").textContent =
+    name || "Nom non défini";
+  // Avatar
+  const avatarLetter = (name || user.email)[0].toUpperCase();
+  document.getElementById("profile-avatar").textContent = avatarLetter;
 }
 
 document.getElementById("save-btn").addEventListener("click", async () => {
   const newName = document.getElementById("display-name").value;
 
   const { error } = await updateUser({
-    data: { display_name: newName }
+    data: { display_name: newName },
   });
 
   if (error) {
