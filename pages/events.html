@@ -40,33 +40,35 @@
     </div>
 
     <div class="event-grid">
-
-      <div class="event-card">
-        <h3>Anniversaire Marie</h3>
-        <p>Fête d'anniversaire surprise pour Marie.</p>
-        <p class="event-meta">12 participants</p>
-        <button>Ouvrir</button>
-      </div>
-
-      <div class="event-card">
-        <h3>Sortie Ski</h3>
-        <p>Week-end ski dans les Alpes.</p>
-        <p class="event-meta">8 participants</p>
-        <button>Ouvrir</button>
-      </div>
-
-      <div class="event-card">
-        <h3>Soirée Jeux</h3>
-        <p>Soirée jeux de société.</p>
-        <p class="event-meta">6 participants</p>
-        <button>Ouvrir</button>
-      </div>
-
+      <!-- Grille d'événements remplie dynamiquement -->
     </div>
 
   </main>
 
 </div>
+<!--  Fenêtre de création d'événement -->
+<div id="create-event-modal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Créer un événement</h3>
+
+    <label>Titre</label>
+    <input type="text" id="event-title">
+
+    <label>Description</label>
+    <textarea id="event-description"></textarea>
+
+    <label>Type</label>
+    <select id="event-type">
+      <option value="public">Public</option>
+      <option value="private">Privé</option>
+    </select>
+
+    <button id="save-event-btn">Créer</button>
+    <button id="close-modal-btn" class="close-btn">Annuler</button>
+  </div>
+
+</div>
+
 <script type="module" src="../js/pages/events.js"></script>
 <script type="module" src="../js/pages/profil.js"></script>
 </body>
