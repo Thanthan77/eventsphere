@@ -10,6 +10,7 @@ async function init() {
   if (signupBtn) {
     signupBtn.addEventListener("click", async () => {
       const username = document.getElementById("username").value;
+      console.log("USERNAME =", username);
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
       const confirm = document.getElementById("confirm").value;
