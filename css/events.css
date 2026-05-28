@@ -71,24 +71,24 @@
   cursor: pointer;
 }
 
-/* Fond de la fenêtre modale */
-#create-event-modal {
+/* Cache l'élément */
+.hidden {
+  display: none !important;
+}
+
+/* Fond sombre + centrage */
+.modal {
   position: fixed;
-  inset: 0; /* top:0; right:0; bottom:0; left:0; */
-  background: rgba(0, 0, 0, 0.5); /* fond sombre */
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
 }
 
-/* Classe pour cacher la modale */
-.hidden {
-  display: none;
-}
-
-/* Contenu de la modale */
-#create-event-modal .modal-content {
+/* Contenu du modal */
+.modal-content {
   background: #ffffff;
   padding: 24px 28px;
   border-radius: 8px;
@@ -101,21 +101,21 @@
 }
 
 /* Titre */
-#create-event-modal h3 {
+.modal-content h3 {
   margin: 0 0 8px;
   font-size: 1.4rem;
 }
 
 /* Labels */
-#create-event-modal label {
+.modal-content label {
   font-size: 0.9rem;
   font-weight: 500;
 }
 
 /* Inputs, textarea, select */
-#create-event-modal input[type="text"],
-#create-event-modal textarea,
-#create-event-modal select {
+.modal-content input[type="text"],
+.modal-content textarea,
+.modal-content select {
   width: 100%;
   padding: 8px 10px;
   border-radius: 6px;
@@ -125,7 +125,7 @@
   box-sizing: border-box;
 }
 
-#create-event-modal textarea {
+.modal-content textarea {
   min-height: 80px;
   resize: vertical;
 }
