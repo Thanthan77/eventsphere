@@ -70,3 +70,88 @@
   border: none;
   cursor: pointer;
 }
+
+/* Fond de la fenêtre modale */
+#create-event-modal {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  background: rgba(0, 0, 0, 0.5); /* fond sombre */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Classe pour cacher la modale */
+.hidden {
+  display: none;
+}
+
+/* Contenu de la modale */
+#create-event-modal .modal-content {
+  background: #ffffff;
+  padding: 24px 28px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Titre */
+#create-event-modal h3 {
+  margin: 0 0 8px;
+  font-size: 1.4rem;
+}
+
+/* Labels */
+#create-event-modal label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Inputs, textarea, select */
+#create-event-modal input[type="text"],
+#create-event-modal textarea,
+#create-event-modal select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #d0d0d0;
+  font-size: 0.95rem;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+#create-event-modal textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Boutons */
+#save-event-btn,
+#close-modal-btn {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+#save-event-btn {
+  background: #4f46e5;
+  color: #ffffff;
+}
+
+#save-event-btn:hover {
+  background: #4338ca;
+}
+
+#close-modal-btn {
+  background: #e5e7eb;
+  color: #111827;
+  margin-left: 8px;
+}
