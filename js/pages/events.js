@@ -5,8 +5,6 @@ import { createEvent, getEvents } from "../service/events.js";
 console.log("events.js chargé !");
 
 async function init() {
-  //await requireAuth();
-
   const user = await getUser();
   // Charger les événements
   await loadEvents();
@@ -72,8 +70,12 @@ async function loadEvents() {
       <h3>${event.title}</h3>
       <p>${event.description}</p>
       <p class="event-meta">${event.is_private ? "Privé" : "Public"}</p>
-      <button>Ouvrir</button>
+      <button class="open-event-btn">Ouvrir</button>
     `;
+
+    card.querySelector(".open-event-btn").addEventListener("click", () => {
+      window.location.href = `event.html?id=${event.id}`;
+    });
 
     grid.appendChild(card);
   });
