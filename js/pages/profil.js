@@ -1,5 +1,5 @@
 import { requireAuth } from "../service/session.js";
-import { getUser, extractUsername, extractUsername } from "../service/user.js";
+import { getUser, extractUsername } from "../service/user.js";
 
 async function init() {
   await requireAuth();
