@@ -2,6 +2,8 @@ import { requireAuth } from "../service/session.js";
 import { getUser, extractUsername } from "../service/user.js";
 import { createEvent, getEvents } from "../service/events.js";
 
+console.log("events.js chargé !");
+
 async function init() {
   await requireAuth();
 
@@ -51,18 +53,18 @@ async function loadEvents() {
 
   const { data: events, error } = await getEvents();
 
-  if(error) {
+  if (error) {
     console.error("Erreur Supabase :", error);
     grid.innerHTML = "<p>Impossible de charger les événements.</p>";
     return;
   }
 
-  if(!events || events.length === 0){
+  if (!events || events.length === 0) {
     grid.innerHTML = "<p>Aucun événement pour le moment.</p>";
     return;
   }
 
-  events.forEach((event) =>{
+  events.forEach((event) => {
     const card = document.createElement("div");
     card.classList.add("event-card");
 

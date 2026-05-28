@@ -1,75 +1,68 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mes événements - EventSphere</title>
-  <link rel="stylesheet" href="../css/general.css">
-  <link rel="stylesheet" href="../css/events.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mes événements - EventSphere</title>
+    <link rel="stylesheet" href="../css/general.css" />
+    <link rel="stylesheet" href="../css/events.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <h2>EventSphere</h2>
+        <nav>
+          <a href="dashboard.html">Accueil</a>
+          <a href="events.html" class="active">Mes événements</a>
+          <a href="polls.html">Mes sondages</a>
+        </nav>
+        <button id="logout" class="logout-btn">Déconnexion</button>
+      </aside>
 
-<div class="layout">
+      <main class="content">
+        <div class="topbar">
+          <h2>Mes événements</h2>
+          <div class="avatar" id="avatar"></div>
+        </div>
 
-  <aside class="sidebar">
-    <h2>EventSphere</h2>
-    <nav>
-      <a href="dashboard.html">Accueil</a>
-      <a href="events.html" class="active">Mes événements</a>
-      <a href="polls.html">Mes sondages</a>
-    </nav>
-    <button id="logout" class="logout-btn">Déconnexion</button>
-  </aside>
+        <div class="events-header">
+          <div class="filters">
+            <button class="filter-btn active">Tous</button>
+            <button class="filter-btn">Privé</button>
+            <button class="filter-btn">Public</button>
+          </div>
 
-  <main class="content">
+          <button class="create-btn">+ Créer un événement</button>
+        </div>
 
-    <div class="topbar">
-      <h2>Mes événements</h2>
-      <div class="avatar" id="avatar"></div>
+        <div class="event-grid">
+          <!-- Grille d'événements remplie dynamiquement -->
+        </div>
+      </main>
     </div>
+    <!--  Fenêtre de création d'événement -->
+    <div id="create-event-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Créer un événement</h3>
 
-    <div class="events-header">
+        <label>Titre</label>
+        <input type="text" id="event-title" />
 
-      <div class="filters">
-        <button class="filter-btn active">Tous</button>
-        <button class="filter-btn">Privé</button>
-        <button class="filter-btn">Public</button>
+        <label>Description</label>
+        <textarea id="event-description"></textarea>
+
+        <label>Type</label>
+        <select id="event-type">
+          <option value="public">Public</option>
+          <option value="private">Privé</option>
+        </select>
+
+        <button id="save-event-btn">Créer</button>
+        <button id="close-modal-btn" class="close-btn">Annuler</button>
       </div>
-
-      <button class="create-btn">+ Créer un événement</button>
     </div>
 
-    <div class="event-grid">
-      <!-- Grille d'événements remplie dynamiquement -->
-    </div>
-
-  </main>
-
-</div>
-<!--  Fenêtre de création d'événement -->
-<div id="create-event-modal" class="modal hidden">
-  <div class="modal-content">
-    <h3>Créer un événement</h3>
-
-    <label>Titre</label>
-    <input type="text" id="event-title">
-
-    <label>Description</label>
-    <textarea id="event-description"></textarea>
-
-    <label>Type</label>
-    <select id="event-type">
-      <option value="public">Public</option>
-      <option value="private">Privé</option>
-    </select>
-
-    <button id="save-event-btn">Créer</button>
-    <button id="close-modal-btn" class="close-btn">Annuler</button>
-  </div>
-
-</div>
-
-<script type="module" src="../js/pages/events.js"></script>
-<script type="module" src="../js/pages/profil.js"></script>
-</body>
+    <script type="module" src="../js/pages/events.js"></script>
+    <script type="module" src="../js/pages/profil.js"></script>
+  </body>
 </html>
