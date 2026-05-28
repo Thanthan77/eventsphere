@@ -17,3 +17,13 @@ export async function getEvents() {
 
   return { data, error };
 }
+
+export async function getEventById(eventId) {
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("id", eventId)
+    .single();
+
+  return { data, error };
+}
