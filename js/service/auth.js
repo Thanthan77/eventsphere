@@ -20,15 +20,17 @@ export async function login(email, password) {
 }
 
 export async function loginGoogle() {
+  // 1. Déconnexion Supabase (session locale)
   await supabase.auth.signOut();
-  return await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      redirectTo:
-        "https://purple-tree-0bed2d91e.7.azurestaticapps.net/pages/dashboard.html",
-    },
-  });
+
+  // 2. Déconnexion Google OAuth
+  window.location.href =
+    "https://accounts.google.com/Logout?continue=" +
+    encodeURIComponent(
+      "https://purple-tree-0bed2d91e.7.azurestaticapps.net/pages/login.html"
+    );
 }
+
 
 export async function logout() {
   return await supabase.auth.signOut();

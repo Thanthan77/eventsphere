@@ -3,7 +3,9 @@ import { login, loginGoogle } from "../service/auth.js";
 import { redirectIfLoggedIn } from "../service/session.js";
 
 async function init() {
+  // Nettoyer session Supabase locale
   await supabase.auth.signOut();
+
   // utilisateur déjà connecté
   await redirectIfLoggedIn();
 
@@ -27,7 +29,16 @@ async function init() {
   // Connexion Google
   const googleBtn = document.getElementById("google-login");
   if (googleBtn) {
-    googleBtn.addEventListener("click", loginGoogle);
+    googleBtn.addEventListener("click", async () => {
+      // Lancer OAuth proprement
+      await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo:
+            "https://purple-tree-0bed2d91e.7.azurestaticapps.net/pages/dashboard.html",
+        },
+      });
+    });
   }
 }
 
