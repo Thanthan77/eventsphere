@@ -20,6 +20,7 @@ export async function login(email, password) {
 }
 
 export async function loginGoogle() {
+  await supabase.auth.signOut();
   return await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {

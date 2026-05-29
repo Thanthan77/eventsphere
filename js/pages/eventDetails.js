@@ -1,6 +1,9 @@
+import { supabase } from "../utils/supabase.js";
 import { getEventById } from "../service/events.js";
-import { getMembers } from "../service/eventMembers.js";
+import { getMembers,addMember } from "../service/eventMembers.js";
 import { getPolls } from "../service/polls.js";
+
+
 
 async function init() {
   const params = new URLSearchParams(window.location.search);
@@ -23,6 +26,36 @@ async function init() {
   renderEvent(event);
   await loadMembers(eventId);
   await loadPolls(eventId);
+  setupInviteButton(eventId);
+}
+
+function setupInviteButton(eventId) {
+  document.querySelector("#invite-btn").addEventListener("click", async () => {
+    const email = prompt("Entrez le courriel de l'utilisateur à inviter :");
+    if (!email) return;
+
+    const { data: user, error: userError } = await supabase
+      .from("profiles")
+      .select("id")
+      .eq("email", email)
+      .single();
+
+    if (userError || !user) {
+      alert("Aucun utilisateur trouvé avec ce courriel.");
+      return;
+    }
+
+    const userId = user.id;
+
+    const { error: addError } = await addMember(eventId, userId);
+
+    if (addError) {
+      alert("Impossible d'ajouter ce membre (peut-être déjà invité).");
+      return;
+    }
+
+    alert("Utilisateur invité avec succès !");
+  });
 }
 
 function renderEvent(event) {
@@ -66,6 +99,7 @@ async function loadMembers(eventId) {
     )
     .join("");
 }
+
 
 /* Sondages d'un événement */
 
