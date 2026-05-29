@@ -1,10 +1,10 @@
+import { supabase } from "../utils/supabase.js";
 import { login, loginGoogle } from "../service/auth.js";
 import { redirectIfLoggedIn } from "../service/session.js";
 
 async function init() {
-
   await supabase.auth.signOut();
-  // utilisateur déjà connecté 
+  // utilisateur déjà connecté
   await redirectIfLoggedIn();
 
   // Connexion email
