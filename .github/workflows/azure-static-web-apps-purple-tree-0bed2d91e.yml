@@ -19,14 +19,11 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-          lfs: false
+      - uses: actions/checkout@v4
 
       - name: Build And Deploy
         id: builddeploy
-        uses: Azure/static-web-apps-deploy@v1
+        uses: azure/static-web-apps-deploy@v2
         with:
           action: "upload"
           app_location: "/"
@@ -42,6 +39,6 @@ jobs:
     steps:
       - name: Close Pull Request
         id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v1
+        uses: azure/static-web-apps-deploy@v2
         with:
           action: "close"
