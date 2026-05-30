@@ -35,7 +35,7 @@ async function init() {
         provider: "google",
         options: {
           redirectTo:
-            "https://purple-tree-0bed2d91e.7.azurestaticapps.net/pages/dashboard.html",
+            "https://calm-sky-035d00f1e.7.azurestaticapps.net/pages/dashboard.html",
         },
       });
     });
