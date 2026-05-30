@@ -9,6 +9,20 @@ async function init() {
   // utilisateur déjà connecté
   await redirectIfLoggedIn();
 
+  const url = new URL(window.location.href);
+  if (url.searchParams.get("forceGoogleLogin") === "1") {
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo:
+          "https://calm-sky-035d00f1e.7.azurestaticapps.net/pages/dashboard.html",
+      },
+    });
+    return; 
+  }
+
+
+
   // Connexion email
   const loginBtn = document.getElementById("login-btn");
   if (loginBtn) {

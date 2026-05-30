@@ -27,7 +27,7 @@ export async function loginGoogle() {
   window.location.href =
     "https://accounts.google.com/Logout?continue=" +
     encodeURIComponent(
-      "https://calm-sky-035d00f1e.7.azurestaticapps.net/index.html"
+      "https://calm-sky-035d00f1e.7.azurestaticapps.net/index.html?forceGoogleLogin=1"
     );
 }
 
