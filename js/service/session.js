@@ -28,20 +28,16 @@ export async function requireAuth() {
 
 /* Rediriger si déjà connecté */
 export async function redirectIfLoggedIn() {
-  let { data: { session } } = await supabase.auth.getSession();
-
-  if (!session) {
-    await new Promise((resolve) => {
-      supabase.auth.onAuthStateChange((_event, newSession) => {
-        if (newSession) {
-          session = newSession;
-          resolve();
-        }
-      });
-    });
-  }
+  const { data: { session } } = await supabase.auth.getSession();
 
   if (session) {
     window.location.href = "pages/dashboard.html";
+    return;
   }
+
+  supabase.auth.onAuthStateChange((_event, newSession) => {
+    if (newSession) {
+      window.location.href = "pages/dashboard.html";
+    }
+  });
 }

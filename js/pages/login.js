@@ -3,27 +3,10 @@ import { login, loginGoogle } from "../service/auth.js";
 import { redirectIfLoggedIn } from "../service/session.js";
 
 async function init() {
-  // Nettoyer session Supabase locale
-  await supabase.auth.signOut();
-
-  // utilisateur déjà connecté
+  // 1. Vérifier si déjà connecté (Google ou email)
   await redirectIfLoggedIn();
 
-  const url = new URL(window.location.href);
-  if (url.searchParams.get("forceGoogleLogin") === "1") {
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo:
-          "https://calm-sky-035d00f1e.7.azurestaticapps.net/pages/dashboard.html",
-      },
-    });
-    return; 
-  }
-
-
-
-  // Connexion email
+  // 2. Connexion email
   const loginBtn = document.getElementById("login-btn");
   if (loginBtn) {
     loginBtn.addEventListener("click", async () => {
@@ -40,19 +23,10 @@ async function init() {
     });
   }
 
-  // Connexion Google
+  // 3. Connexion Google
   const googleBtn = document.getElementById("google-login");
   if (googleBtn) {
-    googleBtn.addEventListener("click", async () => {
-      // Lancer OAuth proprement
-      await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo:
-            "https://calm-sky-035d00f1e.7.azurestaticapps.net/pages/dashboard.html",
-        },
-      });
-    });
+    googleBtn.addEventListener("click", loginGoogle);
   }
 }
 

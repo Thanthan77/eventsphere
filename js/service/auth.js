@@ -20,16 +20,17 @@ export async function login(email, password) {
 }
 
 export async function loginGoogle() {
-  // 1. Déconnexion Supabase (session locale)
-  await supabase.auth.signOut();
+  await supabase.auth.signOut(); 
 
-  // 2. Déconnexion Google OAuth
-  window.location.href =
-    "https://accounts.google.com/Logout?continue=" +
-    encodeURIComponent(
-      "https://calm-sky-035d00f1e.7.azurestaticapps.net/index.html?forceGoogleLogin=1"
-    );
+  await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo:
+        "https://calm-sky-035d00f1e.7.azurestaticapps.net/pages/dashboard.html",
+    }
+  });
 }
+
 
 
 export async function logout() {
