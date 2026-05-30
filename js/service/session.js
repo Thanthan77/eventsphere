@@ -30,14 +30,17 @@ export async function requireAuth() {
 export async function redirectIfLoggedIn() {
   const { data: { session } } = await supabase.auth.getSession();
 
+  // Si déjà connecté → redirection immédiate
   if (session) {
     window.location.href = "pages/dashboard.html";
     return;
   }
 
+  // Sinon, écouter l'événement OAuth (Google)
   supabase.auth.onAuthStateChange((_event, newSession) => {
     if (newSession) {
       window.location.href = "pages/dashboard.html";
     }
   });
 }
+

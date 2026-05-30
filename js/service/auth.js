@@ -27,9 +27,13 @@ export async function loginGoogle() {
     options: {
       redirectTo:
         "https://calm-sky-035d00f1e.7.azurestaticapps.net/pages/dashboard.html",
+      queryParams: {
+        prompt: "select_account" 
+      }
     }
   });
 }
+
 
 
 
