@@ -27,7 +27,7 @@ export async function loginGoogle() {
   window.location.href =
     "https://accounts.google.com/Logout?continue=" +
     encodeURIComponent(
-      "https://purple-tree-0bed2d91e.7.azurestaticapps.net/pages/login.html"
+      "https://calm-sky-035d00f1e.7.azurestaticapps.net/pages/login.html"
     );
 }
 
