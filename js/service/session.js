@@ -6,16 +6,24 @@ export async function getSession() {
 
   if (!session) return null;
 
-  // Vérifier si le user existe encore dans auth.users
-  const { data: user, error } = await supabase.auth.getUser();
+  // Vérifier si le user existe, mais NE PAS déconnecter immédiatement
+  const { data: user } = await supabase.auth.getUser();
 
-  if (error || !user) {
-    await supabase.auth.signOut();
-    return null;
+  if (!user) {
+    await new Promise(r => setTimeout(r, 300));
+    const { data: retryUser } = await supabase.auth.getUser();
+
+    if (!retryUser) {
+      await supabase.auth.signOut();
+      return null;
+    }
+
+    return session;
   }
 
   return session;
 }
+
 
 /* Rediriger si pas connecté */
 export async function requireAuth() {
@@ -30,13 +38,11 @@ export async function requireAuth() {
 export async function redirectIfLoggedIn() {
   const { data: { session } } = await supabase.auth.getSession();
 
-  // Si déjà connecté → redirection immédiate
   if (session) {
     window.location.href = "pages/dashboard.html";
     return;
   }
 
-  // Sinon, écouter l'événement OAuth (Google)
   supabase.auth.onAuthStateChange((_event, newSession) => {
     if (newSession) {
       window.location.href = "pages/dashboard.html";
