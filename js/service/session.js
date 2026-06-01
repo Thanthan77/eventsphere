@@ -10,7 +10,7 @@ export async function getSession() {
   const { data: user } = await supabase.auth.getUser();
 
   if (!user) {
-    await new Promise(r => setTimeout(r, 300));
+    await new Promise(r => setTimeout(r, 900));
     const { data: retryUser } = await supabase.auth.getUser();
 
     if (!retryUser) {
