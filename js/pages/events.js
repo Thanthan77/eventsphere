@@ -2,7 +2,6 @@ import { requireAuth } from "../service/session.js";
 import { getUser, extractUsername } from "../service/user.js";
 import { createEvent, getEvents } from "../service/events.js";
 
-console.log("events.js chargé !");
 
 async function init() {
   const user = await getUser();

@@ -18,6 +18,7 @@ async function init() {
   if (error || !event) {
     document.getElementById("event-container").innerHTML =
       "<p>Impossible de charger l'événement.</p>";
+      console.error("Erreur Supabase :", error);
     return;
   }
 
