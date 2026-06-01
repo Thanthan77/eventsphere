@@ -18,13 +18,18 @@ async function init() {
   if (error || !event) {
     document.getElementById("event-container").innerHTML =
       "<p>Impossible de charger l'événement.</p>";
-      console.error("Erreur Supabase :", error);
+    console.error("Erreur Supabase :", error);
     return;
   }
 
   renderEvent(event);
+
+  await new Promise((resolve) => setTimeout(resolve, 0));
+
   await loadMembers(eventId);
+
   await loadPolls(eventId);
+
   setupInviteButton(eventId);
 }
 
@@ -73,8 +78,6 @@ function renderEvent(event) {
   `;
 }
 
-/* Membres d'un événement */
-
 async function loadMembers(eventId) {
   const membersList = document.getElementById("members-list");
 
@@ -95,12 +98,10 @@ async function loadMembers(eventId) {
     .map(
       (m) => `
       <p>${m.user_id} — <strong>${m.role}</strong></p>
-    `,
+    `
     )
     .join("");
 }
-
-/* Sondages d'un événement */
 
 async function loadPolls(eventId) {
   const pollsList = document.getElementById("polls-list");
@@ -124,11 +125,10 @@ async function loadPolls(eventId) {
         <p><strong>${p.question}</strong></p>
         <button class="open-poll-btn" data-id="${p.id}">Voir</button>
       </div>
-    `,
+    `
     )
     .join("");
 
-  // Ajouter les listeners pour ouvrir un poll
   document.querySelectorAll(".open-poll-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const pollId = btn.dataset.id;
