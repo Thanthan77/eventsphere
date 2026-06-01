@@ -1,11 +1,13 @@
 import { supabase } from "../utils/supabase.js";
 
-export async function createEvent(title, description, isPrivate, userId) {
+export async function createEvent(title, description, isPrivate, userId,nom,courriel) {
   return await supabase.from("events").insert({
     title,
     description,
     is_private: isPrivate,
-    created_by: userId
+    created_by: userId,
+    nom,
+    courriel
   });
 }
 

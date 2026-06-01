@@ -26,12 +26,16 @@ async function init() {
       const title = document.getElementById("event-title").value;
       const description = document.getElementById("event-description").value;
       const type = document.getElementById("event-type").value;
+      const nom = extractUsername(user) 
+      const courriel = user.email;
 
       const { error } = await createEvent(
         title,
         description,
         type === "private",
         user.id,
+        nom,
+        courriel
       );
 
       if (error) {
