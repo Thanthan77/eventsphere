@@ -40,6 +40,7 @@ async function init() {
 
       if (error) {
         alert("Erreur lors de la création");
+        console.error("Erreur Supabase :", error);
         return;
       }
 
