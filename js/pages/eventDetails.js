@@ -1,9 +1,7 @@
 import { supabase } from "../utils/supabase.js";
 import { getEventById } from "../service/events.js";
-import { getMembers,addMember } from "../service/eventMembers.js";
+import { getMembers, addMember } from "../service/eventMembers.js";
 import { getPolls } from "../service/polls.js";
-
-
 
 async function init() {
   const params = new URLSearchParams(window.location.search);
@@ -82,6 +80,7 @@ async function loadMembers(eventId) {
   const { data: members, empty, error } = await getMembers(eventId);
 
   if (error) {
+    console.error("Erreur Supabase :", error);
     membersList.innerHTML = "<p>Erreur lors du chargement.</p>";
     return;
   }
@@ -95,11 +94,10 @@ async function loadMembers(eventId) {
     .map(
       (m) => `
       <p>${m.user_id} — <strong>${m.role}</strong></p>
-    `
+    `,
     )
     .join("");
 }
-
 
 /* Sondages d'un événement */
 
@@ -125,7 +123,7 @@ async function loadPolls(eventId) {
         <p><strong>${p.question}</strong></p>
         <button class="open-poll-btn" data-id="${p.id}">Voir</button>
       </div>
-    `
+    `,
     )
     .join("");
 
