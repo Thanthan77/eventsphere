@@ -25,8 +25,11 @@ async function init() {
   renderEvent(event);
 
   await new Promise((resolve) => setTimeout(resolve, 0));
+  
 
   await loadMembers(eventId);
+
+  await new Promise(r => setTimeout(r, 10));
 
   await loadPolls(eventId);
 
