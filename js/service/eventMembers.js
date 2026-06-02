@@ -17,7 +17,7 @@ export async function getMembers(eventId) {
     joined_at: m.joined_at,
     profiles: {
       id: m.user_id,
-      full_name: m.full_name
+      full_name: m.member_full_name
     }
   }));
 
