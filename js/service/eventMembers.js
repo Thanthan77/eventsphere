@@ -9,8 +9,7 @@ export async function getMembers(eventId) {
       joined_at,
       profiles:user_id (
         id,
-        nom,
-        courriel
+        full_name
       )
     `)
     .eq("event_id", eventId);
