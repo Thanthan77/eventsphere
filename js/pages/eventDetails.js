@@ -85,6 +85,7 @@ async function loadMembers(eventId) {
   const membersList = document.getElementById("members-list");
 
   const { data: members, empty, error } = await getMembers(eventId);
+  console.log("DEBUG getMembers():", members);
 
   if (error) {
     console.error("Erreur Supabase :", error);
