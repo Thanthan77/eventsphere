@@ -100,7 +100,7 @@ async function loadMembers(eventId) {
   membersList.innerHTML = members
     .map(
       (m) => `
-      <p>${m.user_id} — <strong>${m.role}</strong></p>
+      <p>${m.nom} — <strong>${m.role}</strong></p>
     `
     )
     .join("");
