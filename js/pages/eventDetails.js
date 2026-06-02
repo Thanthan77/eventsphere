@@ -85,7 +85,7 @@ async function loadMembers(eventId) {
   const membersList = document.getElementById("members-list");
 
   const { data: members, empty, error } = await getMembers(eventId);
-  console.log();
+
   if (error) {
     console.error("Erreur Supabase :", error);
     membersList.innerHTML = "<p>Erreur lors du chargement.</p>";
@@ -98,14 +98,14 @@ async function loadMembers(eventId) {
   }
 
   membersList.innerHTML = members
-  .map(
-    (m) => `
-      <p>${m.profiles?.full_name ?? "Utilisateur inconnu"} — <strong>${m.role}</strong></p>
-    `
-  )
-  .join("");
-
+    .map(
+      (m) => `
+        <p>${m.profiles?.full_name ?? "Utilisateur inconnu"} — <strong>${m.role}</strong></p>
+      `
+    )
+    .join("");
 }
+
 
 async function loadPolls(eventId) {
   const pollsList = document.getElementById("polls-list");
