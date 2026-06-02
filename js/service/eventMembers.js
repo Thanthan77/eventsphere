@@ -2,17 +2,9 @@ import { supabase } from "../utils/supabase.js";
 
 /* Récupérer les membres d'un événement */
 export async function getMembers(eventId) {
-  const { data, error } = await supabase
-    .from("event_members")
-    .select(`
-      role,
-      joined_at,
-      profiles:user_id (
-        id,
-        full_name
-      )
-    `)
-    .eq("event_id", eventId);
+  const { data, error } = await supabase.rpc("get_event_members", {
+    eid: eventId
+  });
 
   if (error) return { data: null, error };
 
@@ -20,8 +12,18 @@ export async function getMembers(eventId) {
     return { data: [], error: null, empty: true };
   }
 
-  return { data, error: null, empty: false };
+  const formatted = data.map((m) => ({
+    role: m.role,
+    joined_at: m.joined_at,
+    profiles: {
+      id: m.user_id,
+      full_name: m.full_name
+    }
+  }));
+
+  return { data: formatted, error: null, empty: false };
 }
+
 
 
 
