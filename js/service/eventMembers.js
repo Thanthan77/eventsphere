@@ -25,6 +25,7 @@ export async function getMembers(eventId) {
 }
 
 
+
 /* Ajouter un membre */
 export async function addMember(eventId, userId, role = "member") {
   const { data, error } = await supabase
