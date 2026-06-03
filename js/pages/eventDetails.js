@@ -1,7 +1,7 @@
 import { supabase } from "../utils/supabase.js";
 import { getEventById,canInvite } from "../service/events.js";
 import { getMembers, addMember } from "../service/eventMembers.js";
-import { getPolls } from "../service/polls.js";
+import { getPolls,createPoll } from "../service/polls.js";
 
 async function init() {
   const params = new URLSearchParams(window.location.search);
@@ -29,6 +29,7 @@ async function init() {
   await renderEvent(event);
 
   setupInviteButton(eventId);
+  setupCreatePollButton(eventId);
 
   // Charger les membres
   await loadMembers(eventId);
@@ -113,6 +114,28 @@ async function loadMembers(eventId) {
     )
     .join("");
 }
+
+function setupCreatePollButton(eventId) {
+  const btn = document.querySelector("#create-poll-btn");
+  if (!btn) return;
+
+  btn.addEventListener("click", async () => {
+    const question = prompt("Entrez la question du sondage :");
+    if (!question) return;
+
+    const { data, error } = await createPoll(eventId, question);
+
+    if (error) {
+      alert("Impossible de créer le sondage.");
+      console.error(error);
+      return;
+    }
+
+    alert("Sondage créé avec succès !");
+    await loadPolls(eventId);
+  });
+}
+
 
 async function loadPolls(eventId) {
   const pollsList = document.getElementById("polls-list");
