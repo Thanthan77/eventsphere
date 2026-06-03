@@ -1,76 +1,69 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mes sondages - EventSphere</title>
-  <link rel="stylesheet" href="../css/general.css">
-  <link rel="stylesheet" href="../css/polls.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sondage - EventSphere</title>
 
-<div class="layout">
+    <link rel="stylesheet" href="../css/general.css" />
+    <link rel="stylesheet" href="../css/poll.css" />
+  </head>
 
-  <aside class="sidebar">
-    <h2>EventSphere</h2>
-    <nav>
-      <a href="dashboard.html">Accueil</a>
-      <a href="events.html">Mes événements</a>
-      <a href="polls.html" class="active">Sondages</a>
-    </nav>
-    <button id="logout" class="logout-btn">Déconnexion</button>
-  </aside>
+  <body>
+    <div class="layout">
 
-  <main class="content">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <h2>EventSphere</h2>
+        <nav>
+          <a href="dashboard.html">Accueil</a>
+          <a href="events.html">Mes événements</a>
+          <a href="polls.html" class="active">Sondages</a>
+        </nav>
+        <button id="logout" class="logout-btn">Déconnexion</button>
+      </aside>
 
-    <div class="topbar">
-      <h2>Mes sondages</h2>
-      <div class="avatar" id="avatar"></div>
+      <!-- Main content -->
+      <main class="content">
+
+        <!-- Topbar -->
+        <div class="topbar">
+          <h2 id="poll-title"></h2>
+          <div class="avatar" id="avatar"></div>
+        </div>
+
+        <!-- Poll details -->
+        <div class="poll-header">
+          <p><strong>Événement :</strong> <span id="poll-event-name"></span></p>
+          <p><strong>Question :</strong> <span id="poll-question"></span></p>
+        </div>
+
+        <!-- Options -->
+        <h3>Options</h3>
+        <div id="poll-options" class="poll-options">
+          <!-- Options remplies dynamiquement -->
+        </div>
+
+        <!-- Votes -->
+        <h3>Votes</h3>
+        <div id="poll-votes" class="poll-votes">
+          <!-- Votes remplis dynamiquement -->
+        </div>
+
+        <!-- Actions -->
+        <div class="poll-actions">
+          <button id="vote-btn" class="primary-btn">Voter</button>
+          <button id="add-option-btn" class="secondary-btn">Ajouter une option</button>
+        </div>
+
+      </main>
     </div>
 
-    <div class="polls-header">
+    <!-- Scripts globaux -->
+    <script type="module" src="../js/pages/profil.js"></script>
+    <script type="module" src="../js/pages/logout.js"></script>
 
-      <div class="poll-filters">
-        <button class="filter-btn active">Tous</button>
-        <button class="filter-btn">Ouverts</button>
-        <button class="filter-btn">Fermés</button>
-      </div>
-    </div>
-
-    <div class="poll-card">
-      <h3>Quelle date pour l’anniversaire ?</h3>
-      <div class="poll-tags">
-        <span class="tag">date</span>
-        <span class="tag">ouvert</span>
-      </div>
-      <p>12 votes</p>
-      <button>Voter</button>
-    </div>
-
-    <div class="poll-card">
-      <h3>Où organiser la fête ?</h3>
-      <div class="poll-tags">
-        <span class="tag">lieu</span>
-        <span class="tag">ouvert</span>
-      </div>
-      <p>11 votes</p>
-      <button>Voter</button>
-    </div>
-
-    <div class="poll-card">
-      <h3>Station de ski préférée</h3>
-      <div class="poll-tags">
-        <span class="tag">lieu</span>
-        <span class="tag">ouvert</span>
-      </div>
-      <p>8 votes</p>
-      <button>Voter</button>
-    </div>
-
-  </main>
-
-</div>
-<script type="module" src="../js/pages/profil.js"></script>
-<script type="module" src="../js/pages/logout.js"></script>
-</body>
+    <!-- Script spécifique au sondage -->
+    <script type="module" src="../js/pages/poll.js"></script>
+  </body>
 </html>
