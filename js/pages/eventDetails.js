@@ -37,13 +37,14 @@ async function init() {
   await loadPolls(eventId);
 }
 
-
 function setupInviteButton(eventId) {
-  document.querySelector("#invite-btn").addEventListener("click", async () => {
+  const btn = document.querySelector("#invite-btn");
+  if (!btn) return;
+
+  btn.addEventListener("click", async () => {
     const email = prompt("Entrez le courriel de l'utilisateur à inviter :");
     if (!email) return;
 
-    // Chercher l'utilisateur dans profiles
     const { data: user, error: userError } = await supabase
       .from("profiles")
       .select("id")
@@ -55,10 +56,7 @@ function setupInviteButton(eventId) {
       return;
     }
 
-    const userId = user.id;
-
-    // Ajouter via RPC add_member
-    const { error: addError } = await addMember(eventId, userId);
+    const { error: addError } = await addMember(eventId, user.id);
 
     if (addError) {
       alert("Impossible d'ajouter ce membre (peut-être déjà invité).");
@@ -70,6 +68,7 @@ function setupInviteButton(eventId) {
     await loadMembers(eventId);
   });
 }
+
 
 async function renderEvent(event) {
    const { data: { user } } = await supabase.auth.getUser();
