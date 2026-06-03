@@ -167,7 +167,7 @@ async function loadPolls(eventId) {
   document.querySelectorAll(".open-poll-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const pollId = btn.dataset.id;
-      window.location.href = `poll.html?id=${pollId}`;
+      window.location.href = `polls.html?id=${pollId}`;
     });
   });
 }
