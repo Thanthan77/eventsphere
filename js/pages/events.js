@@ -24,6 +24,7 @@ async function init() {
     const type = document.getElementById("event-type").value;
 
    const freshUser = await getUser();
+   console.log("freshUser:", freshUser);
    const { data, error } = await createEvent(
    title,
    description,
