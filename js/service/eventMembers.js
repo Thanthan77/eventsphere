@@ -3,7 +3,7 @@ import { supabase } from "../utils/supabase.js";
 /* Récupérer les membres d'un événement */
 export async function getMembers(eventId) {
   const { data, error } = await supabase.rpc("get_event_members", {
-    eid: eventId
+    event_id: eventId
   });
 
   console.log("RAW RPC DATA:", data);
@@ -25,6 +25,7 @@ export async function getMembers(eventId) {
 
   return { data: formatted, error: null, empty: false };
 }
+
 
 
 
