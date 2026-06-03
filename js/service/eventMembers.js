@@ -1,6 +1,6 @@
 import { supabase } from "../utils/supabase.js";
 
-/* Récupérer les membres d'un événement */
+/* Récupérer les membres d'un événement  */
 export async function getMembers(eventId) {
   const { data, error } = await supabase.rpc("get_event_members", {
     event_id: eventId
@@ -8,7 +8,10 @@ export async function getMembers(eventId) {
 
   console.log("RAW RPC DATA:", data);
 
-  if (error) return { data: null, error };
+  if (error) {
+    console.error("RPC ERROR get_event_members:", error);
+    return { data: null, error };
+  }
 
   if (!data || data.length === 0) {
     return { data: [], error: null, empty: true };
@@ -26,30 +29,22 @@ export async function getMembers(eventId) {
   return { data: formatted, error: null, empty: false };
 }
 
+/* Ajouter un membre  */
+export async function addMember(eventId, userId) {
+  const { error } = await supabase.rpc("add_member", {
+    event_id: eventId,
+    user_id: userId
+  });
 
-
-
-
-/* Ajouter un membre */
-export async function addMember(eventId, userId, role = "member") {
-  const { data, error } = await supabase
-    .from("event_members")
-    .insert({
-      event_id: eventId,
-      user_id: userId,
-      role,
-    });
-
-  return { data, error };
+  return { error };
 }
 
-/* Retirer un membre */
+/* Retirer un membre  */
 export async function removeMember(eventId, userId) {
-  const { data, error } = await supabase
-    .from("event_members")
-    .delete()
-    .eq("event_id", eventId)
-    .eq("user_id", userId);
+  const { error } = await supabase.rpc("remove_member", {
+    event_id: eventId,
+    user_id: userId
+  });
 
-  return { data, error };
+  return { error };
 }

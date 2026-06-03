@@ -1,12 +1,10 @@
 import { supabase } from "../utils/supabase.js";
 
-/* Récupérer les polls d'un événement */
+/* Récupérer les polls d'un événement  */
 export async function getPolls(eventId) {
-  const { data, error } = await supabase
-    .from("polls")
-    .select("*")
-    .eq("event_id", eventId)
-    .order("created_at", { ascending: false });
+  const { data, error } = await supabase.rpc("get_polls", {
+    event_id: eventId
+  });
 
   if (error) return { data: null, error };
 
@@ -17,15 +15,13 @@ export async function getPolls(eventId) {
   return { data, empty: false, error: null };
 }
 
-/* Créer un poll */
-export async function createPoll(eventId, question, category, userId) {
+/* Créer un poll  */
+export async function createPoll(eventId, question) {
   const { data, error } = await supabase
     .from("polls")
     .insert({
       event_id: eventId,
-      question,
-      category,
-      created_by: userId,
+      question
     })
     .select()
     .single();
@@ -33,11 +29,11 @@ export async function createPoll(eventId, question, category, userId) {
   return { data, error };
 }
 
-/* Récupérer les options d'un poll */
+/* Récupérer les options d'un poll  */
 export async function getPollOptions(pollId) {
   const { data, error } = await supabase
     .from("poll_options")
-    .select("*")
+    .select("id, option_text")
     .eq("poll_id", pollId);
 
   if (error) return { data: null, error };
@@ -49,24 +45,25 @@ export async function getPollOptions(pollId) {
   return { data, empty: false, error: null };
 }
 
-/* Ajouter une option */
-export async function addPollOption(pollId, text, userId) {
+/* Ajouter une option  */
+export async function addPollOption(pollId, text) {
   const { data, error } = await supabase
     .from("poll_options")
     .insert({
       poll_id: pollId,
-      option_text: text,
-      created_by: userId,
-    });
+      option_text: text
+    })
+    .select()
+    .single();
 
   return { data, error };
 }
 
-/* Récupérer les votes d'un poll */
+/* Récupérer les votes  */
 export async function getVotes(pollId) {
   const { data, error } = await supabase
     .from("poll_votes")
-    .select("*")
+    .select("poll_id, option_id, user_id")
     .eq("poll_id", pollId);
 
   if (error) return { data: null, error };
@@ -78,15 +75,17 @@ export async function getVotes(pollId) {
   return { data, empty: false, error: null };
 }
 
-/* Voter */
+/* Voter  */
 export async function vote(pollId, optionId, userId) {
   const { data, error } = await supabase
     .from("poll_votes")
     .insert({
       poll_id: pollId,
       option_id: optionId,
-      user_id: userId,
-    });
+      user_id: userId
+    })
+    .select()
+    .single();
 
   return { data, error };
 }

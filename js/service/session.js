@@ -1,29 +1,10 @@
 import { supabase } from "../utils/supabase.js";
 
-
+/* Récupérer la session */
 export async function getSession() {
   const { data: { session } } = await supabase.auth.getSession();
-
-  if (!session) return null;
-
-  // Vérifier si le user existe, mais NE PAS déconnecter immédiatement
-  const { data: user } = await supabase.auth.getUser();
-
-  if (!user) {
-    await new Promise(r => setTimeout(r, 900));
-    const { data: retryUser } = await supabase.auth.getUser();
-
-    if (!retryUser) {
-      await supabase.auth.signOut();
-      return null;
-    }
-
-    return session;
-  }
-
-  return session;
+  return session ?? null;
 }
-
 
 /* Rediriger si pas connecté */
 export async function requireAuth() {
@@ -32,7 +13,6 @@ export async function requireAuth() {
     window.location.href = "../index.html";
   }
 }
-
 
 /* Rediriger si déjà connecté */
 export async function redirectIfLoggedIn() {
@@ -49,4 +29,3 @@ export async function redirectIfLoggedIn() {
     }
   });
 }
-

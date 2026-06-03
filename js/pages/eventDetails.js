@@ -13,6 +13,7 @@ async function init() {
     return;
   }
 
+  // Charger l'événement via RPC
   const { data: event, error } = await getEventById(eventId);
 
   if (error || !event) {
@@ -24,15 +25,13 @@ async function init() {
 
   renderEvent(event);
 
-  await new Promise((resolve) => setTimeout(resolve, 0));
-  
-
+  // Charger les membres
   await loadMembers(eventId);
 
-  await new Promise(r => setTimeout(r, 10));
-
+  // Charger les sondages
   await loadPolls(eventId);
 
+  // Bouton d'invitation
   setupInviteButton(eventId);
 }
 
@@ -41,6 +40,7 @@ function setupInviteButton(eventId) {
     const email = prompt("Entrez le courriel de l'utilisateur à inviter :");
     if (!email) return;
 
+    // Chercher l'utilisateur dans profiles
     const { data: user, error: userError } = await supabase
       .from("profiles")
       .select("id")
@@ -54,14 +54,17 @@ function setupInviteButton(eventId) {
 
     const userId = user.id;
 
+    // Ajouter via RPC add_member
     const { error: addError } = await addMember(eventId, userId);
 
     if (addError) {
       alert("Impossible d'ajouter ce membre (peut-être déjà invité).");
+      console.error(addError);
       return;
     }
 
     alert("Utilisateur invité avec succès !");
+    await loadMembers(eventId);
   });
 }
 
@@ -85,8 +88,6 @@ async function loadMembers(eventId) {
   const membersList = document.getElementById("members-list");
 
   const { data: members, empty, error } = await getMembers(eventId);
-  console.log("EVENT ID FRONTEND:", eventId);
-  console.log("DEBUG getMembers():", members);
 
   if (error) {
     console.error("Erreur Supabase :", error);
@@ -108,13 +109,13 @@ async function loadMembers(eventId) {
     .join("");
 }
 
-
 async function loadPolls(eventId) {
   const pollsList = document.getElementById("polls-list");
 
   const { data: polls, empty, error } = await getPolls(eventId);
 
   if (error) {
+    console.error(error);
     pollsList.innerHTML = "<p>Erreur lors du chargement.</p>";
     return;
   }

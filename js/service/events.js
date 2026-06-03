@@ -1,16 +1,22 @@
 import { supabase } from "../utils/supabase.js";
 
-export async function createEvent(title, description, isPrivate, userId, nom, courriel) {
-  return await supabase.from("events").insert({
-    title,
-    description,
-    is_private: isPrivate,
-    created_by: userId,
-    nom,
-    courriel
-  });
+/* Créer un événement (via INSERT direct — autorisé si tu veux) */
+export async function createEvent(title, description, isPrivate, userId) {
+  const { data, error } = await supabase
+    .from("events")
+    .insert({
+      title,
+      description,
+      is_private: isPrivate,
+      created_by: userId
+    })
+    .select()
+    .single();
+
+  return { data, error };
 }
 
+/* Récupérer tous les événements (publics + privés si membre) */
 export async function getEvents() {
   const { data, error } = await supabase
     .from("events")
@@ -20,12 +26,11 @@ export async function getEvents() {
   return { data, error };
 }
 
+/* Récupérer un événement par ID (via RPC propre) */
 export async function getEventById(eventId) {
-  const { data, error } = await supabase
-    .from("events")
-    .select("id, title, description, is_private, created_by, nom, courriel")
-    .eq("id", eventId)
-    .single();
+  const { data, error } = await supabase.rpc("get_event_by_id", {
+    event_id: eventId
+  });
 
   return { data, error };
 }
