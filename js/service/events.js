@@ -31,3 +31,8 @@ export async function getEventById(eventId) {
 
   return { data, error };
 }
+
+export async function canInvite(event, user) {
+  return event.created_by === user.id;
+}
+

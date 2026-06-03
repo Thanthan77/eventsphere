@@ -1,5 +1,5 @@
 import { supabase } from "../utils/supabase.js";
-import { getEventById } from "../service/events.js";
+import { getEventById,canInvite } from "../service/events.js";
 import { getMembers, addMember } from "../service/eventMembers.js";
 import { getPolls } from "../service/polls.js";
 
@@ -26,7 +26,7 @@ async function init() {
   const event = eventArray[0];
 
   // On affiche l'événement
-  renderEvent(event);
+  await renderEvent(event);
 
   setupInviteButton(eventId);
 
@@ -71,7 +71,9 @@ function setupInviteButton(eventId) {
   });
 }
 
-function renderEvent(event) {
+async function renderEvent(event) {
+   const { data: { user } } = await supabase.auth.getUser();
+  const canUserInvite = event.created_by === user.id;
   document.getElementById("event-container").innerHTML = `
     <h2>${event.title ?? "Titre introuvable"}</h2>
     <p>${event.description ?? "Aucune description"}</p>
@@ -79,7 +81,7 @@ function renderEvent(event) {
 
     <h3>Participants</h3>
     <div id="members-list">Chargement...</div>
-    <button id="invite-btn">Inviter quelqu'un</button>
+    ${canUserInvite ? `<button id="invite-btn">Inviter quelqu'un</button>` : ''}
 
     <h3>Sondages</h3>
     <div id="polls-list">Chargement...</div>

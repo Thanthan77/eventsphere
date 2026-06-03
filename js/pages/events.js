@@ -1,6 +1,6 @@
 import { requireAuth } from "../service/session.js";
 import { getUser } from "../service/user.js";
-import { createEvent, getEvents } from "../service/events.js";
+import { createEvent, getEvents} from "../service/events.js";
 
 async function init() {
   await requireAuth();
