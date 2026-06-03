@@ -23,12 +23,14 @@ async function init() {
     const description = document.getElementById("event-description").value;
     const type = document.getElementById("event-type").value;
 
-    const { data, error } = await createEvent(
-      title,
-      description,
-      type === "private",
-      user.id
-    );
+   const freshUser = await getUser();
+   const { data, error } = await createEvent(
+   title,
+   description,
+   type === "private",
+   freshUser.id
+   );
+
 
     if (error) {
       alert("Erreur lors de la création");
