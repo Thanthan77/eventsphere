@@ -14,26 +14,30 @@ async function init() {
   }
 
   // Charger l'événement via RPC
-  const { data: event, error } = await getEventById(eventId);
-console.log("Event data from RPC:", event, "Error:", error);
-  if (error || !event) {
+  const { data: eventArray, error } = await getEventById(eventId);
+  console.log("Event data from RPC:", eventArray, "Error:", error);
+
+  if (error || !eventArray || eventArray.length === 0) {
     document.getElementById("event-container").innerHTML =
       "<p>Impossible de charger l'événement.</p>";
-    console.error("Erreur Supabase :", error);
     return;
   }
 
+  // On récupère l'objet
+  const event = eventArray[0];
+
+  // On affiche l'événement
   renderEvent(event);
+
+  setupInviteButton(eventId);
 
   // Charger les membres
   await loadMembers(eventId);
 
   // Charger les sondages
   await loadPolls(eventId);
-
-  // Bouton d'invitation
-  setupInviteButton(eventId);
 }
+
 
 function setupInviteButton(eventId) {
   document.querySelector("#invite-btn").addEventListener("click", async () => {
@@ -70,8 +74,8 @@ function setupInviteButton(eventId) {
 
 function renderEvent(event) {
   document.getElementById("event-container").innerHTML = `
-    <h2>${event.title}</h2>
-    <p>${event.description}</p>
+    <h2>${event.title ?? "Titre introuvable"}</h2>
+    <p>${event.description ?? "Aucune description"}</p>
     <p><strong>Type :</strong> ${event.is_private ? "Privé" : "Public"}</p>
 
     <h3>Participants</h3>
@@ -83,6 +87,7 @@ function renderEvent(event) {
     <button id="create-poll-btn">Créer un sondage</button>
   `;
 }
+
 
 async function loadMembers(eventId) {
   const membersList = document.getElementById("members-list");
