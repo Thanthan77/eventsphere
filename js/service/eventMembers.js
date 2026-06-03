@@ -5,6 +5,7 @@ export async function getMembers(eventId) {
   const { data, error } = await supabase.rpc("get_event_members", {
     eid: eventId
   });
+
   console.log("RAW RPC DATA:", data);
 
   if (error) return { data: null, error };
@@ -15,10 +16,10 @@ export async function getMembers(eventId) {
 
   const formatted = data.map((m) => ({
     role: m.role,
-    joined_at: m.joined_at,
     profiles: {
       id: m.user_id,
-      full_name: m.member_full_name
+      full_name: m.full_name,
+      email: m.email
     }
   }));
 
