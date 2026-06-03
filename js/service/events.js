@@ -10,9 +10,6 @@ export async function createEvent(title, description, isPrivate, userId) {
       is_private: isPrivate,
       created_by: userId
     })
-    .select()
-    .single();
-
   return { data, error };
 }
 
