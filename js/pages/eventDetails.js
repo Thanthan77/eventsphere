@@ -15,8 +15,7 @@ async function init() {
 
   // Charger l'événement via RPC
   const { data: eventArray, error } = await getEventById(eventId);
-  console.log("Event data from RPC:", eventArray, "Error:", error);
-
+  
   if (error || !eventArray || eventArray.length === 0) {
     document.getElementById("event-container").innerHTML =
       "<p>Impossible de charger l'événement.</p>";

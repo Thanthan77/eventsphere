@@ -6,8 +6,6 @@ export async function getMembers(eventId) {
     event_id: eventId
   });
 
-  console.log("RAW RPC DATA:", data);
-
   if (error) {
     console.error("RPC ERROR get_event_members:", error);
     return { data: null, error };

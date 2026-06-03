@@ -18,31 +18,32 @@ async function init() {
   });
 
   // Sauvegarder un événement
-  document.getElementById("save-event-btn").addEventListener("click", async () => {
-    const title = document.getElementById("event-title").value;
-    const description = document.getElementById("event-description").value;
-    const type = document.getElementById("event-type").value;
+  document
+    .getElementById("save-event-btn")
+    .addEventListener("click", async () => {
+      const title = document.getElementById("event-title").value;
+      const description = document.getElementById("event-description").value;
+      const type = document.getElementById("event-type").value;
 
-   const freshUser = await getUser();
-   console.log("freshUser:", freshUser);
-   const { data, error } = await createEvent(
-   title,
-   description,
-   type === "private",
-   freshUser.id
-   );
+      const freshUser = await getUser();
+      console.log("freshUser:", freshUser);
+      const { data, error } = await createEvent(
+        title,
+        description,
+        type === "private",
+        freshUser.id,
+      );
 
+      if (error) {
+        alert("Erreur lors de la création");
+        console.error("Erreur Supabase :", error);
+        return;
+      }
 
-    if (error) {
-      alert("Erreur lors de la création");
-      console.error("Erreur Supabase :", error);
-      return;
-    }
-
-    alert("Événement créé !");
-    document.getElementById("create-event-modal").classList.add("hidden");
-    await loadEvents();
-  });
+      alert("Événement créé !");
+      document.getElementById("create-event-modal").classList.add("hidden");
+      await loadEvents();
+    });
 }
 
 async function loadEvents() {
@@ -50,7 +51,7 @@ async function loadEvents() {
   grid.innerHTML = ""; // reset
 
   const { data: events, error } = await getEvents();
-
+  console.log("Events loaded:", events, "Error:", error);
   if (error) {
     console.error("Erreur Supabase :", error);
     grid.innerHTML = "<p>Impossible de charger les événements.</p>";
