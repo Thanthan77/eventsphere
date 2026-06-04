@@ -15,6 +15,7 @@ async function loadPolls(userId) {
 
   if (error) {
     container.innerHTML = "<p>Erreur lors du chargement des sondages.</p>";
+    console.error("Error loading polls:", error);
     return;
   }
 
