@@ -91,25 +91,61 @@ export async function vote(pollId, optionId, userId) {
 }
 
 export async function getAccessiblePolls(userId) {
-  const { data, error } = await supabase
+  // Sondages publics
+  const { data: publicPolls, error: publicErr } = await supabase
     .from("polls")
     .select(`
       id,
       question,
       event_id,
-      events (
-        id,
-        title,
-        is_private,
-        created_by
-      ),
+      events ( id, title, is_private, created_by ),
       poll_votes(count)
     `)
-    .or(
-      `events.is_private.eq.false,
-       events.created_by.eq."${userId}",
-       poll_votes.user_id.eq."${userId}"`
-    );
+    .eq("events.is_private", false);
 
-  return { data, error };
+  // Sondages des événements que l'utilisateur organise
+  const { data: ownedPolls, error: ownedErr } = await supabase
+    .from("polls")
+    .select(`
+      id,
+      question,
+      event_id,
+      events ( id, title, is_private, created_by ),
+      poll_votes(count)
+    `)
+    .eq("events.created_by", userId);
+
+  //  Sondages des événements où l'utilisateur est membre
+  const { data: memberPolls, error: memberErr } = await supabase
+    .from("polls")
+    .select(`
+      id,
+      question,
+      event_id,
+      events ( id, title, is_private, created_by ),
+      event_members!inner(user_id),
+      poll_votes(count)
+    `)
+    .eq("event_members.user_id", userId);
+
+  if (publicErr || ownedErr || memberErr) {
+    return { data: null, error: publicErr || ownedErr || memberErr };
+  }
+
+  // Fusionner les 3 listes
+  const all = [
+    ...(publicPolls || []),
+    ...(ownedPolls || []),
+    ...(memberPolls || [])
+  ];
+
+  // Enlever les doublons (même poll.id)
+  const unique = Object.values(
+    all.reduce((acc, poll) => {
+      acc[poll.id] = poll;
+      return acc;
+    }, {})
+  );
+
+  return { data: unique, error: null };
 }
