@@ -115,13 +115,13 @@ async function loadMembers(eventId,event) {
       (m) => `
       <div class="member-item">
         <p>${m.profiles.full_name} (${m.profiles.email}) - ${m.role}</p>
-        ${canUserRemove && m.profiles.id !== creatorId ? `<button class="open-btn" data-user="${m.profiles.id}">Retirer</button>` : ''}
+        ${canUserRemove && m.profiles.id !== creatorId ? `<button class="open-remove-btn" data-user="${m.profiles.id}">Retirer</button>` : ''}
       </div>
       `
     )
     .join("");
 
-  document.querySelectorAll(".open-btn").forEach((btn) => {
+  document.querySelectorAll(".open-remove-btn").forEach((btn) => {
     btn.addEventListener("click", async () => {
       const userId = btn.dataset.user;
 
@@ -186,13 +186,13 @@ async function loadPolls(eventId) {
       (p) => `
       <div class="poll-item">
         <p><strong>${p.question}</strong></p>
-        <button class="open-btn" data-id="${p.id}">Voir</button>
+        <button class="open-poll-btn" data-id="${p.id}">Voir</button>
       </div>
     `
     )
     .join("");
 
-  document.querySelectorAll(".open-btn").forEach((btn) => {
+  document.querySelectorAll(".open-poll-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const pollId = btn.dataset.id;
       window.location.href = `pollDetail.html?id=${pollId}`;
