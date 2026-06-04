@@ -70,7 +70,7 @@
   font-weight: 500;
 }
 
-.open-poll-btn {
+.open-btn {
   padding: 6px 12px;
   background: #4a2cff;
   color: white;
@@ -79,6 +79,19 @@
   cursor: pointer;
 }
 
-.open-poll-btn:hover {
+.open-btn:hover {
   background: #3a22d0;
+}
+
+.member-item {
+  padding: 8px 12px;
+  background: #f7f7ff;
+  border: 1px solid #e0e0ff;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+.member-item p {
+  margin: 0;
+  font-weight: 500;
 }
