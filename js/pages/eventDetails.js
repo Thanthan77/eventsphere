@@ -27,8 +27,8 @@ async function init() {
   // On affiche l'événement
   await renderEvent(event);
 
-  setupInviteButton(eventId);
-  setupCreatePollButton(eventId);
+  setupInviteButton(eventId,event);
+  setupCreatePollButton(eventId,event);
 
   // Charger les membres
   await loadMembers(eventId,event);
@@ -37,7 +37,7 @@ async function init() {
   await loadPolls(eventId);
 }
 
-function setupInviteButton(eventId) {
+function setupInviteButton(eventId,event) {
   const btn = document.querySelector("#invite-btn");
   if (!btn) return;
 
@@ -65,7 +65,7 @@ function setupInviteButton(eventId) {
     }
 
     alert("Utilisateur invité avec succès !");
-    await loadMembers(eventId);
+    await loadMembers(eventId,event);
   });
 }
 
@@ -137,12 +137,12 @@ async function loadMembers(eventId,event) {
       }
 
       alert("Membre retiré !");
-      loadMembers(eventId); // Recharger la liste
+      await loadMembers(eventId,event); 
     });
   });
 }
 
-function setupCreatePollButton(eventId) {
+function setupCreatePollButton(eventId,event) {
   const btn = document.querySelector("#create-poll-btn");
   if (!btn) return;
 
@@ -160,6 +160,7 @@ function setupCreatePollButton(eventId) {
 
     alert("Sondage créé avec succès !");
     await loadPolls(eventId);
+    await loadMembers(eventId,event);
   });
 }
 
