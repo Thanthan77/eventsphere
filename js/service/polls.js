@@ -91,8 +91,9 @@ export async function vote(pollId, optionId, userId) {
 }
 
 export async function getAccessiblePolls(userId) {
-  // Sondages publics
-  const { data: publicPolls, error: publicErr } = await supabase
+
+  // Récupérer les sondages publics
+  const { data: publicPolls } = await supabase
     .from("polls")
     .select(`
       id,
@@ -103,8 +104,8 @@ export async function getAccessiblePolls(userId) {
     `)
     .eq("events.is_private", false);
 
-  // Sondages des événements que l'utilisateur organise
-  const { data: ownedPolls, error: ownedErr } = await supabase
+  //  Récupérer les sondages des événements créés par l'utilisateur
+  const { data: ownedPolls } = await supabase
     .from("polls")
     .select(`
       id,
@@ -115,37 +116,46 @@ export async function getAccessiblePolls(userId) {
     `)
     .eq("events.created_by", userId);
 
-  //  Sondages des événements où l'utilisateur est membre
-  const { data: memberPolls, error: memberErr } = await supabase
-    .from("polls")
-    .select(`
-      id,
-      question,
-      event_id,
-      events ( id, title, is_private, created_by ),
-      event_members!inner(user_id),
-      poll_votes(count)
-    `)
-    .eq("event_members.user_id", userId);
+  //  Récupérer les événements où l'utilisateur est membre
+  const { data: memberships } = await supabase
+    .from("event_members")
+    .select("event_id")
+    .eq("user_id", userId);
 
-  if (publicErr || ownedErr || memberErr) {
-    return { data: null, error: publicErr || ownedErr || memberErr };
+  const memberEventIds = memberships?.map(m => m.event_id) || [];
+
+  //  Récupérer les sondages de ces événements
+  let memberPolls = [];
+  if (memberEventIds.length > 0) {
+    const { data } = await supabase
+      .from("polls")
+      .select(`
+        id,
+        question,
+        event_id,
+        events ( id, title, is_private, created_by ),
+        poll_votes(count)
+      `)
+      .in("event_id", memberEventIds);
+
+    memberPolls = data || [];
   }
 
   // Fusionner les 3 listes
-  const all = [
+  const allPolls = [
     ...(publicPolls || []),
     ...(ownedPolls || []),
-    ...(memberPolls || [])
+    ...memberPolls
   ];
 
-  // Enlever les doublons (même poll.id)
-  const unique = Object.values(
-    all.reduce((acc, poll) => {
+  // Enlever les doublons 
+  const uniquePolls = Object.values(
+    allPolls.reduce((acc, poll) => {
       acc[poll.id] = poll;
       return acc;
     }, {})
   );
 
-  return { data: unique, error: null };
+  return { data: uniquePolls, error: null };
 }
+
