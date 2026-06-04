@@ -1,6 +1,6 @@
 import { supabase } from "../utils/supabase.js";
 
-/* Créer un événement (via INSERT direct — autorisé si tu veux) */
+/* Créer un événement  */
 export async function createEvent(title, description, isPrivate, userId) {
   const { data, error } = await supabase
     .from("events")
@@ -13,7 +13,7 @@ export async function createEvent(title, description, isPrivate, userId) {
   return { data, error };
 }
 
-/* Récupérer tous les événements (publics + privés si membre) */
+/* Récupérer tous les événements */
 export async function getEvents() {
   const { data, error } = await supabase
     .from("events")
@@ -23,7 +23,7 @@ export async function getEvents() {
   return { data, error };
 }
 
-/* Récupérer un événement par ID (via RPC propre) */
+/* Récupérer un événement par ID  */
 export async function getEventById(eventId) {
   const { data, error } = await supabase.rpc("get_event_by_id", {
     event_id: eventId

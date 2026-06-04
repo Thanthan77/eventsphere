@@ -107,8 +107,8 @@ export async function getAccessiblePolls(userId) {
     `)
     .or(
       `events.is_private.eq.false,
-       events.created_by.eq.${userId},
-       poll_votes.user_id.eq.${userId}`
+       events.created_by.eq."${userId}",
+       poll_votes.user_id.eq."${userId}"`
     );
 
   return { data, error };
