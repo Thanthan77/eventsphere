@@ -89,3 +89,27 @@ export async function vote(pollId, optionId, userId) {
 
   return { data, error };
 }
+
+export async function getAccessiblePolls(userId) {
+  const { data, error } = await supabase
+    .from("polls")
+    .select(`
+      id,
+      question,
+      event_id,
+      events (
+        id,
+        title,
+        is_private,
+        created_by
+      ),
+      poll_votes(count)
+    `)
+    .or(
+      `events.is_private.eq.false,
+       events.created_by.eq.${userId},
+       poll_votes.user_id.eq.${userId}`
+    );
+
+  return { data, error };
+}
