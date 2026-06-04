@@ -36,3 +36,20 @@ export async function canInvite(event, user) {
   return event.created_by === user.id;
 }
 
+export async function canManageMembers(eventId) {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // Récupérer l'événement
+  const { data: event, error } = await supabase
+    .from("events")
+    .select("created_by")
+    .eq("id", eventId)
+    .single();
+
+  if (error) return false;
+
+  // Vérifier si l'utilisateur est le créateur
+  return event.created_by === user.id;
+}
+
+

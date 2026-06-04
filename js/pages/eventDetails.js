@@ -1,19 +1,18 @@
 import { supabase } from "../utils/supabase.js";
-import { getEventById,canInvite } from "../service/events.js";
-import { getMembers, addMember } from "../service/eventMembers.js";
+import { getEventById,canInvite,canManageMembers } from "../service/events.js";
+import { getMembers, addMember,removeMember} from "../service/eventMembers.js";
 import { getPolls,createPoll } from "../service/polls.js";
 
 async function init() {
   const params = new URLSearchParams(window.location.search);
   const eventId = params.get("id");
-
   if (!eventId) {
     document.getElementById("event-container").innerHTML =
       "<p>Événement introuvable.</p>";
     return;
   }
 
-  // Charger l'événement via RPC
+  // Charger l'événement 
   const { data: eventArray, error } = await getEventById(eventId);
   
   if (error || !eventArray || eventArray.length === 0) {
@@ -71,6 +70,7 @@ function setupInviteButton(eventId) {
 }
 
 
+
 async function renderEvent(event) {
    const { data: { user } } = await supabase.auth.getUser();
   const canUserInvite = event.created_by === user.id;
@@ -93,6 +93,9 @@ async function renderEvent(event) {
 async function loadMembers(eventId) {
   const membersList = document.getElementById("members-list");
 
+  // Vérifier si l'utilisateur peut retirer des membres
+  const canUserRemove = await canManageMembers(eventId);
+
   const { data: members, empty, error } = await getMembers(eventId);
 
   if (error) {
@@ -109,10 +112,33 @@ async function loadMembers(eventId) {
   membersList.innerHTML = members
     .map(
       (m) => `
-        <p>${m.profiles?.full_name ?? "Utilisateur inconnu"} — <strong>${m.role}</strong></p>
+      <div class="member-item">
+        <p>${m.profiles.full_name} (${m.profiles.email}) - ${m.role}</p>
+        ${canUserRemove ? `<button class="remove-member-btn" data-user="${m.profiles.id}">Retirer</button>` : ''}
+      </div>
       `
     )
     .join("");
+
+  document.querySelectorAll(".remove-member-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const userId = btn.dataset.user;
+
+      const confirmRemove = confirm("Retirer ce membre ?");
+      if (!confirmRemove) return;
+
+      const { error } = await removeMember(eventId, userId);
+
+      if (error) {
+        alert("Impossible de retirer ce membre.");
+        console.error(error);
+        return;
+      }
+
+      alert("Membre retiré !");
+      loadMembers(eventId); // Recharger la liste
+    });
+  });
 }
 
 function setupCreatePollButton(eventId) {
