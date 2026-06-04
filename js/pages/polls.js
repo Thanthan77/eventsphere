@@ -37,7 +37,7 @@ async function loadPolls(userId) {
 
         <p>${p.poll_votes[0].count} vote(s)</p>
 
-        <button onclick="window.location.href='poll.html?id=${p.id}'">
+        <button onclick="window.location.href='pollDetail.html?id=${p.id}'">
           Voir
         </button>
       </div>
