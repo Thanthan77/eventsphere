@@ -114,7 +114,7 @@ async function loadMembers(eventId) {
       (m) => `
       <div class="member-item">
         <p>${m.profiles.full_name} (${m.profiles.email}) - ${m.role}</p>
-        ${canUserRemove ? `<button class="remove-member-btn" data-user="${m.profiles.id}">Retirer</button>` : ''}
+        ${canUserRemove && m.profiles.id !== members[0].event_created_by ? `<button class="remove-member-btn" data-user="${m.profiles.id}">Retirer</button>` : ''}
       </div>
       `
     )
