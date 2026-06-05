@@ -40,10 +40,10 @@ export async function addMember(eventId, userId) {
 /* Retirer un membre  */
 export async function removeMember(eventId, userId) {
   const { data, error } = await supabase.rpc("remove_member", {
-    event_id: eventId,
-    user_id: userId
+    p_event_id: eventId,
+    p_user_id: userId
   });
-  console.log("RPC remove_member => data:", data, "error:", error);
 
+  console.log("RPC remove_member => data:", data, "error:", error);
   return { data, error };
 }
