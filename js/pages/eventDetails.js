@@ -128,6 +128,11 @@ async function loadMembers(eventId,event) {
       const confirmRemove = confirm("Retirer ce membre ?");
       if (!confirmRemove) return;
 
+       console.log(" Appel RPC remove_member avec :", {
+      event_id: eventId,
+      user_id: userId
+    });
+
       const { error } = await removeMember(eventId, userId);
 
       if (error) {
@@ -137,6 +142,7 @@ async function loadMembers(eventId,event) {
       }
 
       alert("Membre retiré !");
+      console.log(" Rechargement des membres…");
       await loadMembers(eventId,event); 
     });
   });
