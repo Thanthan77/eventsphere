@@ -26,7 +26,7 @@ export async function loginGoogle() {
     provider: "google",
     options: {
       redirectTo:
-        "https://calm-sky-035d00f1e.7.azurestaticapps.net/pages/dashboard.html",
+        "thanthan77.github.io/eventsphere/pages/dashboard.html",
       queryParams: {
         prompt: "select_account" 
       }
