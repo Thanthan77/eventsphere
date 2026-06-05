@@ -26,7 +26,7 @@ export async function loginGoogle() {
     provider: "google",
     options: {
       redirectTo:
-        "https://thanthan77.github.io/eventsphere/eventsphere/pages/dashboard.html",
+        "https://thanthan77.github.io/eventsphere/pages/dashboard.html",
       queryParams: {
         prompt: "select_account" 
       }
