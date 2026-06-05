@@ -133,7 +133,9 @@ async function loadMembers(eventId,event) {
       user_id: userId
     });
 
-      const { error } = await removeMember(eventId, userId);
+      const { data, error } = await removeMember(eventId, userId);
+
+      console.log(" Résultat suppression :", { data, error });
 
       if (error) {
         alert("Impossible de retirer ce membre.");

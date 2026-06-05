@@ -43,6 +43,7 @@ export async function removeMember(eventId, userId) {
     event_id: eventId,
     user_id: userId
   });
+  console.log("RPC remove_member => data:", data, "error:", error);
 
   return { error };
 }
