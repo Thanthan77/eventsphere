@@ -98,6 +98,7 @@ export async function getAccessiblePolls(userId) {
     .select(`
       id,
       question,
+      created_at,
       event_id,
       events ( id, title, is_private, created_by ),
       poll_votes(count)
@@ -157,5 +158,10 @@ export async function getAccessiblePolls(userId) {
   );
 
   return { data: uniquePolls, error: null };
+}
+
+export async function getRecentPolls() {
+  const { data, error } = await supabase.rpc("get_recent_polls");
+  return { data, error };
 }
 

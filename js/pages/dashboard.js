@@ -1,7 +1,9 @@
 import { getEvents } from "../service/events.js";
+import { getRecentPolls } from "../service/polls.js";
 
 async function init() {
   await loadRecentEvents();
+  await loadRecentPolls();
 }
 
 async function loadRecentEvents() {
@@ -48,5 +50,37 @@ async function loadRecentEvents() {
     list.appendChild(card);
   });
 }
+
+async function loadRecentPolls() {
+  const container = document.querySelector(".polls-list");
+
+  const { data: polls, error } = await getRecentPolls();
+
+  if (error) {
+    container.innerHTML += "<p>Erreur lors du chargement.</p>";
+    return;
+  }
+
+  if (!polls || polls.length === 0) {
+    container.innerHTML += "<p>Aucun sondage disponible.</p>";
+    return;
+  }
+
+  polls.forEach((poll) => {
+    const card = document.createElement("div");
+    card.classList.add("poll-card");
+
+    card.innerHTML = `
+      <h4>${poll.question}</h4>
+      <p>${poll.vote_count} votes</p>
+      <button onclick="window.location.href='pollDetail.html?id=${poll.id}'">
+        Voter
+      </button>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
 
 init();
