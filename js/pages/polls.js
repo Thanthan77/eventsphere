@@ -20,7 +20,7 @@ async function loadPolls(userId) {
   }
 
   if (!polls || polls.length === 0) {
-    container.innerHTML = "<p>Aucun sondage disponible.</p>";
+    container.innerHTML = "<p>Aucun sondage pour le moment.</p>";
     return;
   }
 
