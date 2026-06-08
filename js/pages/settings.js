@@ -1,34 +1,34 @@
-import { getUser, extractUsername, updateUser } from "../service/user.js";
+import { getUser, extractUsername, updateUserProfile } from "../service/user.js";
+
+let currentUser = null;
 
 async function init() {
-  const user = await getUser();
+  currentUser = await getUser();
 
   // Email
-  document.getElementById("email").value = user.email;
-  document.getElementById("profile-email").textContent = user.email;
+  document.getElementById("email").value = currentUser.email;
+  document.getElementById("profile-email").textContent = currentUser.email;
 
   // Display name
-  const name = extractUsername(user);
+  const name = extractUsername(currentUser);
   document.getElementById("display-name").value = name || "";
   document.getElementById("profile-name").textContent =
     name || "Nom non défini";
+
   // Avatar
-  const avatarLetter = (name || user.email)[0].toUpperCase();
+  const avatarLetter = (name || currentUser.email)[0].toUpperCase();
   document.getElementById("profile-avatar").textContent = avatarLetter;
 }
 
 document.getElementById("save-btn").addEventListener("click", async () => {
   const newName = document.getElementById("display-name").value;
 
-  const { error } = await updateUser({
-    data: { display_name: newName },
-  });
+  const { error } = await updateUserProfile(newName);
 
   if (error) {
     alert("Erreur lors de la mise à jour");
   } else {
     alert("Nom mis à jour !");
-    console.log("USER:", user);
     location.reload();
   }
 });

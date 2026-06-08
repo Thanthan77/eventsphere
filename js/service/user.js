@@ -19,8 +19,20 @@ export function extractUsername(user) {
   );
 }
 
-/* Mettre à jour les informations de l'utilisateur */
-export async function updateUser(updates) {
-  const { data, error } = await supabase.auth.updateUser(updates);
-  return { data, error };
+
+export async function updateUserProfile(newName) {
+  // Récupérer l'utilisateur connecté
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  if (userError || !user) {
+    return { error: userError || "Utilisateur non connecté" };
+  }
+
+  // Appel RPC
+  const { error } = await supabase.rpc("update_user_profile", {
+    user_id: user.id,
+    new_name: newName
+  });
+
+  return { error };
 }
+
