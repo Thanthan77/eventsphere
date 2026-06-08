@@ -1,5 +1,6 @@
 import { getEvents } from "../service/events.js";
 import { getRecentPolls } from "../service/polls.js";
+import { supabase } from "../utils/supabase.js";
 
 async function init() {
   await loadRecentEvents();
