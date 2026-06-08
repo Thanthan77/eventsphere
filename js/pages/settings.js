@@ -28,6 +28,7 @@ document.getElementById("save-btn").addEventListener("click", async () => {
     alert("Erreur lors de la mise à jour");
   } else {
     alert("Nom mis à jour !");
+    console.log("USER:", user);
     location.reload();
   }
 });
