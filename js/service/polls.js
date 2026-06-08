@@ -160,8 +160,11 @@ export async function getAccessiblePolls(userId) {
   return { data: uniquePolls, error: null };
 }
 
-export async function getRecentPolls() {
-  const { data, error } = await supabase.rpc("get_recent_polls");
+export async function getRecentPolls(userId) {
+  const { data, error } = await supabase.rpc("get_recent_polls", {
+    user_id: userId
+  });
+
   return { data, error };
 }
 

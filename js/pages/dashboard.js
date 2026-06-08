@@ -54,7 +54,17 @@ async function loadRecentEvents() {
 async function loadRecentPolls() {
   const container = document.querySelector(".polls-list");
 
-  const { data: polls, error } = await getRecentPolls();
+  const {
+    data: { user },
+    error: userError
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    container.innerHTML += "<p>Utilisateur non connecté</p>";
+    return;
+  }
+
+  const { data: polls, error } = await getRecentPolls(user.id);
 
   if (error) {
     container.innerHTML += "<p>Erreur lors du chargement.</p>";
