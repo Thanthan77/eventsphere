@@ -3,16 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sondage - EventSphere</title>
-
+    <title>Mes sondages - EventSphere</title>
     <link rel="stylesheet" href="../css/general.css" />
     <link rel="stylesheet" href="../css/polls.css" />
   </head>
 
   <body>
     <div class="layout">
-
-      <!-- Sidebar -->
       <aside class="sidebar">
         <h2>EventSphere</h2>
         <nav>
@@ -23,26 +20,28 @@
         <button id="logout" class="logout-btn">Déconnexion</button>
       </aside>
 
-      <!-- Main content -->
       <main class="content">
-
-        <!-- Topbar -->
         <div class="topbar">
-          <h2 id="poll-title">Sondages</h2>
+          <h2>Mes sondages</h2>
           <div class="avatar" id="avatar"></div>
         </div>
 
-        <div class="poll-grid">
-          <!-- Grille de sondages remplie dynamiquement -->
+        <div class="polls-header">
+          <div class="filters">
+            <button class="filter-btn active">Tous</button>
+            <button class="filter-btn">Privé</button>
+            <button class="filter-btn">Public</button>
+          </div>
         </div>
 
-
+        <div class="poll-grid">
+          <!-- Grille remplie dynamiquement -->
+        </div>
       </main>
     </div>
 
-
+    <script type="module" src="../js/pages/polls.js"></script>
     <script type="module" src="../js/pages/profil.js"></script>
     <script type="module" src="../js/pages/logout.js"></script>
-    <script type="module" src="../js/pages/polls.js"></script>
   </body>
 </html>

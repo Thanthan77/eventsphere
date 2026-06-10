@@ -102,3 +102,31 @@
   border: 1px solid #dcdcff;
   cursor: pointer;
 }
+
+
+.polls-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.polls-header .filters {
+  display: flex;
+  gap: 10px;
+}
+
+.polls-header .filter-btn {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+}
+
+.polls-header .filter-btn.active {
+  background: #4a2cff;
+  color: white;
+  border-color: #4a2cff;
+}
+
