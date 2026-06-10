@@ -9,18 +9,25 @@ async function init() {
 }
 
 async function loadPolls(userId) {
-  const container = document.querySelector(".poll-grid");
-
   const { data: polls, error } = await getAccessiblePolls(userId);
 
   if (error) {
-    container.innerHTML = "<p>Erreur lors du chargement des sondages.</p>";
+    document.querySelector(".poll-grid").innerHTML =
+      "<p>Erreur lors du chargement des sondages.</p>";
     console.error("Error loading polls:", error);
     return;
   }
 
+  renderPolls(polls);
+  setupPollFilters(polls, userId); 
+}
+
+function renderPolls(polls) {
+  const container = document.querySelector(".poll-grid");
+  container.innerHTML = "";
+
   if (!polls || polls.length === 0) {
-    container.innerHTML = "<p>Aucun sondage pour le moment.</p>";
+    container.innerHTML = "<p>Aucun sondage trouvé.</p>";
     return;
   }
 
@@ -44,6 +51,42 @@ async function loadPolls(userId) {
     `
     )
     .join("");
+}
+
+function setupPollFilters(polls, userId) {
+  const buttons = document.querySelectorAll(".filter-btn");
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      buttons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const filter = btn.textContent.trim();
+      let filtered = polls;
+
+      if (filter === "Tous") {
+        filtered = polls;
+      }
+
+      else if (filter === "Mes sondages") {
+        filtered = polls.filter((p) => p.events.created_by === userId);
+      }
+
+      else if (filter === "Votés") {
+        filtered = polls.filter((p) =>
+          p.poll_votes.some((v) => v.user_id === userId)
+        );
+      }
+
+      else if (filter === "Non votés") {
+        filtered = polls.filter(
+          (p) => !p.poll_votes.some((v) => v.user_id === userId)
+        );
+      }
+
+      renderPolls(filtered);
+    });
+  });
 }
 
 init();
