@@ -1,9 +1,8 @@
-/* ❌ NE PAS toucher à .content — on enlève ton override */
+
 .content {
   width: 100%;
 }
 
-/* ⭐ Nouveau wrapper interne pour élargir la page sans casser l’avatar */
 .event-wrapper {
   max-width: 1400px;
   width: 100%;
