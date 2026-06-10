@@ -1,12 +1,9 @@
 import { requireAuth } from "../service/session.js";
 import { getUser } from "../service/user.js";
-import { createEvent, getEvents} from "../service/events.js";
+import { createEvent, getEvents } from "../service/events.js";
 
 async function init() {
   await requireAuth();
-  const user = await getUser();
-
-  // Charger les événements
   await loadEvents();
 
   document.querySelector(".create-btn").addEventListener("click", () => {
@@ -17,49 +14,50 @@ async function init() {
     document.getElementById("create-event-modal").classList.add("hidden");
   });
 
-  // Sauvegarder un événement
-  document
-    .getElementById("save-event-btn")
-    .addEventListener("click", async () => {
-      const title = document.getElementById("event-title").value;
-      const description = document.getElementById("event-description").value;
-      const type = document.getElementById("event-type").value;
+  document.getElementById("save-event-btn").addEventListener("click", async () => {
+    const title = document.getElementById("event-title").value;
+    const description = document.getElementById("event-description").value;
+    const type = document.getElementById("event-type").value;
 
-      const freshUser = await getUser();
-      console.log("freshUser:", freshUser);
-      const { data, error } = await createEvent(
-        title,
-        description,
-        type === "private",
-        freshUser.id,
-      );
+    const freshUser = await getUser();
 
-      if (error) {
-        alert("Erreur lors de la création");
-        console.error("Erreur Supabase :", error);
-        return;
-      }
+    const { error } = await createEvent(
+      title,
+      description,
+      type === "private",
+      freshUser.id
+    );
 
-      alert("Événement créé !");
-      document.getElementById("create-event-modal").classList.add("hidden");
-      await loadEvents();
-    });
+    if (error) {
+      alert("Erreur lors de la création");
+      return;
+    }
+
+    alert("Événement créé !");
+    document.getElementById("create-event-modal").classList.add("hidden");
+    await loadEvents();
+  });
 }
 
 async function loadEvents() {
-  const grid = document.querySelector(".event-grid");
-  grid.innerHTML = ""; // reset
-
   const { data: events, error } = await getEvents();
-  console.log("Events loaded:", events, "Error:", error);
+
   if (error) {
-    console.error("Erreur Supabase :", error);
-    grid.innerHTML = "<p>Impossible de charger les événements.</p>";
+    document.querySelector(".event-grid").innerHTML =
+      "<p>Impossible de charger les événements.</p>";
     return;
   }
 
+  renderEvents(events);
+  setupEventFilters(events); 
+}
+
+function renderEvents(events) {
+  const grid = document.querySelector(".event-grid");
+  grid.innerHTML = "";
+
   if (!events || events.length === 0) {
-    grid.innerHTML = "<p>Aucun événement pour le moment.</p>";
+    grid.innerHTML = "<p>Aucun événement trouvé.</p>";
     return;
   }
 
@@ -79,6 +77,28 @@ async function loadEvents() {
     });
 
     grid.appendChild(card);
+  });
+}
+
+function setupEventFilters(events) {
+  const buttons = document.querySelectorAll(".filter-btn");
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      buttons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const filter = btn.textContent.trim(); 
+      let filtered = events;
+
+      if (filter === "Privé") {
+        filtered = events.filter((e) => e.is_private);
+      } else if (filter === "Public") {
+        filtered = events.filter((e) => !e.is_private);
+      }
+
+      renderEvents(filtered);
+    });
   });
 }
 
