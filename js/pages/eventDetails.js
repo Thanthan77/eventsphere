@@ -1,43 +1,57 @@
 import { supabase } from "../utils/supabase.js";
-import { getEventById,canInvite,canManageMembers } from "../service/events.js";
-import { getMembers, addMember,removeMember} from "../service/eventMembers.js";
-import { getPolls,createPoll } from "../service/polls.js";
+import { getEventById, canInvite, canManageMembers } from "../service/events.js";
+import { getMembers, addMember, removeMember } from "../service/eventMembers.js";
+import { getPolls, createPoll } from "../service/polls.js";
 
 async function init() {
   const params = new URLSearchParams(window.location.search);
   const eventId = params.get("id");
+
   if (!eventId) {
     document.getElementById("event-container").innerHTML =
       "<p>Événement introuvable.</p>";
     return;
   }
 
-  // Charger l'événement 
   const { data: eventArray, error } = await getEventById(eventId);
-  
+
   if (error || !eventArray || eventArray.length === 0) {
     document.getElementById("event-container").innerHTML =
       "<p>Impossible de charger l'événement.</p>";
     return;
   }
 
-  // On récupère l'objet
   const event = eventArray[0];
 
-  // On affiche l'événement
   await renderEvent(event);
 
-  setupInviteButton(eventId,event);
-  setupCreatePollButton(eventId,event);
+  setupInviteButton(eventId, event);
+  setupCreatePollButton(eventId, event);
 
-  // Charger les membres
-  await loadMembers(eventId,event);
-
-  // Charger les sondages
+  await loadMembers(eventId, event);
   await loadPolls(eventId);
 }
 
-function setupInviteButton(eventId,event) {
+async function renderEvent(event) {
+  const { data: { user } } = await supabase.auth.getUser();
+  const canUserInvite = event.created_by === user.id;
+
+  document.getElementById("event-container").innerHTML = `
+    <h2>${event.title ?? "Titre introuvable"}</h2>
+    <p>${event.description ?? "Aucune description"}</p>
+    <p><strong>Type :</strong> ${event.is_private ? "Privé" : "Public"}</p>
+
+    <h3>Participants</h3>
+    <div class="section-block" id="members-list">Chargement...</div>
+    ${canUserInvite ? `<button id="invite-btn">Inviter quelqu'un</button>` : ""}
+
+    <h3>Sondages</h3>
+    <div class="section-block" id="polls-list">Chargement...</div>
+    <button id="create-poll-btn">Créer un sondage</button>
+  `;
+}
+
+function setupInviteButton(eventId, event) {
   const btn = document.querySelector("#invite-btn");
   if (!btn) return;
 
@@ -60,47 +74,23 @@ function setupInviteButton(eventId,event) {
 
     if (addError) {
       alert("Impossible d'ajouter ce membre (peut-être déjà invité).");
-      console.error(addError);
       return;
     }
 
     alert("Utilisateur invité avec succès !");
-    await loadMembers(eventId,event);
+    await loadMembers(eventId, event);
   });
 }
 
-
-
-async function renderEvent(event) {
-   const { data: { user } } = await supabase.auth.getUser();
-  const canUserInvite = event.created_by === user.id;
-  document.getElementById("event-container").innerHTML = `
-    <h2>${event.title ?? "Titre introuvable"}</h2>
-    <p>${event.description ?? "Aucune description"}</p>
-    <p><strong>Type :</strong> ${event.is_private ? "Privé" : "Public"}</p>
-
-    <h3>Participants</h3>
-    <div id="members-list">Chargement...</div>
-    ${canUserInvite ? `<button id="invite-btn">Inviter quelqu'un</button>` : ''}
-
-    <h3>Sondages</h3>
-    <div id="polls-list">Chargement...</div>
-    <button id="create-poll-btn">Créer un sondage</button>
-  `;
-}
-
-
-async function loadMembers(eventId,event) {
+async function loadMembers(eventId, event) {
   const creatorId = event.created_by;
   const membersList = document.getElementById("members-list");
 
-  // Vérifier si l'utilisateur peut retirer des membres
   const canUserRemove = await canManageMembers(eventId);
 
   const { data: members, empty, error } = await getMembers(eventId);
 
   if (error) {
-    console.error("Erreur Supabase :", error);
     membersList.innerHTML = "<p>Erreur lors du chargement.</p>";
     return;
   }
@@ -114,10 +104,14 @@ async function loadMembers(eventId,event) {
     .map(
       (m) => `
       <div class="member-item">
-        <p>${m.profiles.full_name} (${m.profiles.email}) - ${m.role}</p>
-        ${canUserRemove && m.profiles.id !== creatorId ? `<button class="open-remove-btn" data-user="${m.profiles.id}">Retirer</button>` : ''}
+        <p>${m.profiles.full_name} (${m.profiles.email}) — ${m.role}</p>
+        ${
+          canUserRemove && m.profiles.id !== creatorId
+            ? `<button class="open-remove-btn" data-user="${m.profiles.id}">Retirer</button>`
+            : ""
+        }
       </div>
-      `
+    `
     )
     .join("");
 
@@ -125,32 +119,22 @@ async function loadMembers(eventId,event) {
     btn.addEventListener("click", async () => {
       const userId = btn.dataset.user;
 
-      const confirmRemove = confirm("Retirer ce membre ?");
-      if (!confirmRemove) return;
+      if (!confirm("Retirer ce membre ?")) return;
 
-       console.log(" Appel RPC remove_member avec :", {
-      event_id: eventId,
-      user_id: userId
-    });
-
-      const { data, error } = await removeMember(eventId, userId);
-
-      console.log(" Résultat suppression :", { data, error });
+      const { error } = await removeMember(eventId, userId);
 
       if (error) {
         alert("Impossible de retirer ce membre.");
-        console.error(error);
         return;
       }
 
       alert("Membre retiré !");
-      console.log(" Rechargement des membres…");
-      await loadMembers(eventId,event); 
+      await loadMembers(eventId, event);
     });
   });
 }
 
-function setupCreatePollButton(eventId,event) {
+function setupCreatePollButton(eventId, event) {
   const btn = document.querySelector("#create-poll-btn");
   if (!btn) return;
 
@@ -158,20 +142,17 @@ function setupCreatePollButton(eventId,event) {
     const question = prompt("Entrez la question du sondage :");
     if (!question) return;
 
-    const { data, error } = await createPoll(eventId, question);
+    const { error } = await createPoll(eventId, question);
 
     if (error) {
       alert("Impossible de créer le sondage.");
-      console.error(error);
       return;
     }
 
     alert("Sondage créé avec succès !");
     await loadPolls(eventId);
-    await loadMembers(eventId,event);
   });
 }
-
 
 async function loadPolls(eventId) {
   const pollsList = document.getElementById("polls-list");
@@ -179,7 +160,6 @@ async function loadPolls(eventId) {
   const { data: polls, empty, error } = await getPolls(eventId);
 
   if (error) {
-    console.error(error);
     pollsList.innerHTML = "<p>Erreur lors du chargement.</p>";
     return;
   }

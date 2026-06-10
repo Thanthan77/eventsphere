@@ -1,16 +1,25 @@
-
+/* ❌ NE PAS toucher à .content — on enlève ton override */
 .content {
-  max-width: 1400px !important;
   width: 100%;
 }
 
+/* ⭐ Nouveau wrapper interne pour élargir la page sans casser l’avatar */
+.event-wrapper {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 40px;
+}
+
+/* Grille identique à PollDetails */
 .event-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 20px;
+  width: 100%;
 }
 
-
+/* Carte identique à PollDetails */
 .event-card {
   background: white;
   padding: 30px 35px;
@@ -27,7 +36,6 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-
 .event-card h2 {
   color: #4a2cff;
   margin-bottom: 10px;
@@ -39,13 +47,12 @@
   color: #4a2cff;
 }
 
-
 .event-card p {
   margin-bottom: 8px;
   color: #555;
 }
 
-
+/* Boutons */
 #invite-btn,
 #create-poll-btn {
   padding: 10px 18px;
@@ -63,7 +70,7 @@
   background: #3a22cc;
 }
 
-
+/* Sections internes identiques à PollDetails */
 .section-block {
   background: #fafafa;
   padding: 20px;
@@ -72,6 +79,7 @@
   margin-bottom: 25px;
 }
 
+/* Items membres */
 .member-item {
   background: #f7f7ff;
   padding: 12px 16px;
@@ -88,7 +96,6 @@
   font-weight: 500;
 }
 
-
 .open-remove-btn {
   padding: 6px 12px;
   background: #4a2cff;
@@ -103,6 +110,7 @@
   background: #3a22cc;
 }
 
+/* Items sondages */
 .poll-item {
   background: #f7f7ff;
   padding: 12px 16px;

@@ -6,8 +6,10 @@
     <link rel="stylesheet" href="../css/general.css" />
     <link rel="stylesheet" href="../css/eventDetails.css" />
   </head>
+
   <body>
     <div class="layout">
+
       <aside class="sidebar">
         <h2>EventSphere</h2>
         <nav>
@@ -19,16 +21,24 @@
       </aside>
 
       <main class="content">
+
         <div class="topbar">
-          <h2>Detail de l'événement</h2>
+          <h2>Détail de l'événement</h2>
           <div class="avatar" id="avatar"></div>
         </div>
-      <div class="event-grid">
-        <div class="event-card" id="event-container"></div>
-      </div>
+
+        <div class="event-wrapper">
+          <div class="event-grid">
+            <div class="event-card" id="event-container">
+              <!-- Le JS remplira cette carte -->
+            </div>
+
+          </div>
+        </div>
 
       </main>
     </div>
+
     <script type="module" src="../js/pages/profil.js"></script>
     <script type="module" src="../js/pages/logout.js"></script>
     <script type="module" src="../js/pages/eventDetails.js"></script>
