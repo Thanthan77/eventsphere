@@ -139,3 +139,22 @@
 .open-poll-btn:hover {
   background: #3a22cc;
 }
+
+.delete-poll-btn {
+  padding: 6px 12px;
+  background: #ff4a4a;
+  color: white;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.delete-poll-btn:hover {
+  background: #e63939;
+}
+
+.poll-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}

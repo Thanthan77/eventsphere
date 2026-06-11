@@ -1,7 +1,7 @@
 import { supabase } from "../utils/supabase.js";
 import { getEventById, canInvite, canManageMembers } from "../service/events.js";
 import { getMembers, addMember, removeMember } from "../service/eventMembers.js";
-import { getPolls, createPoll } from "../service/polls.js";
+import { getPolls, createPoll,deletePoll } from "../service/polls.js";
 
 async function init() {
   const params = new URLSearchParams(window.location.search);
@@ -157,6 +157,14 @@ function setupCreatePollButton(eventId, event) {
 async function loadPolls(eventId) {
   const pollsList = document.getElementById("polls-list");
 
+  // Récupérer l'utilisateur courant
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // Récupérer l'événement pour savoir qui est le créateur
+  const { data: eventArray } = await getEventById(eventId);
+  const event = eventArray[0];
+  const isCreator = event.created_by === user.id;
+
   const { data: polls, empty, error } = await getPolls(eventId);
 
   if (error) {
@@ -169,23 +177,87 @@ async function loadPolls(eventId) {
     return;
   }
 
-  pollsList.innerHTML = polls
+  const MAX = 3;
+  const visiblePolls = polls.slice(0, MAX);
+
+  pollsList.innerHTML = visiblePolls
     .map(
       (p) => `
       <div class="poll-item">
         <p><strong>${p.question}</strong></p>
-        <button class="open-poll-btn" data-id="${p.id}">Voir</button>
+        <div class="poll-actions">
+          <button class="open-poll-btn" data-id="${p.id}">Voir</button>
+          ${isCreator ? `<button class="delete-poll-btn" data-id="${p.id}">Supprimer</button>` : ""}
+        </div>
       </div>
     `
     )
     .join("");
 
+  // Bouton voir plus
+  if (polls.length > MAX) {
+    pollsList.innerHTML += `
+      <button id="show-more-polls">Voir tous les sondages (${polls.length})</button>
+    `;
+  }
+
+  attachPollListeners(eventId, isCreator);
+
+  const showMoreBtn = document.getElementById("show-more-polls");
+  if (showMoreBtn) {
+    showMoreBtn.addEventListener("click", () => {
+      pollsList.innerHTML = polls
+        .map(
+          (p) => `
+          <div class="poll-item">
+            <p><strong>${p.question}</strong></p>
+            <div class="poll-actions">
+              <button class="open-poll-btn" data-id="${p.id}">Voir</button>
+              ${isCreator ? `<button class="delete-poll-btn" data-id="${p.id}">Supprimer</button>` : ""}
+            </div>
+          </div>
+        `
+        )
+        .join("");
+
+      // Réattacher les listeners pour la version complète
+      attachPollListeners(eventId, isCreator);
+    });
+  }
+}
+
+function attachPollListeners(eventId, isCreator) {
+  // Listener pour voir
   document.querySelectorAll(".open-poll-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const pollId = btn.dataset.id;
       window.location.href = `pollDetail.html?id=${pollId}`;
     });
   });
+
+  // Listener pour supprimer
+  if (isCreator) {
+    document.querySelectorAll(".delete-poll-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const pollId = btn.dataset.id;
+
+        if (!confirm("Supprimer ce sondage ?")) return;
+
+        const { error } = await deletePoll(pollId);
+
+        if (error) {
+          alert("Impossible de supprimer le sondage.");
+          console.error(error);
+          return;
+        }
+
+        alert("Sondage supprimé !");
+        await loadPolls(eventId);
+      });
+    });
+  }
 }
+
+
 
 init();
