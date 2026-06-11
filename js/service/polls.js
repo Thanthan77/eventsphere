@@ -168,7 +168,7 @@ export async function getRecentPolls(userId) {
   return { data, error };
 }
 
-async function deletePoll(pollId) {
+export async function deletePoll(pollId) {
   const { error } = await supabase.rpc("delete_poll", {
     p_poll_id: pollId
   });
