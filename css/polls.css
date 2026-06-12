@@ -129,6 +129,12 @@
   align-items: center;
 }
 
+.selectable-option.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+
 
 
 

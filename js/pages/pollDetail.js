@@ -22,14 +22,19 @@ async function init() {
   // Charger les votes
   const votes = await loadVotes(pollId);
 
-  // Construire la carte
-  renderPollCard(poll, options, votes);
+  // Récupérer l'utilisateur
+  const { data: { user } } = await supabase.auth.getUser();
+  const userVote = votes.find(v => v.user_id === user.id);
 
-  setupVoting(pollId, options);
+  // Construire la carte de sondage
+  renderPollCard(poll, options, votes, userVote);
+
+
+  setupVoting(pollId, options, userVote);
   setupAddOptionButton(pollId);
 }
 
-/* Charger le sondage + event */
+/* Charger le sondage et l'événement */
 async function loadPoll(pollId) {
   const { data, error } = await supabase
     .from("polls")
@@ -42,7 +47,6 @@ async function loadPoll(pollId) {
     return null;
   }
 
-  // Charger l'événement
   const { data: eventArray } = await getEventById(data.event_id);
   const event = eventArray ? eventArray[0] : null;
 
@@ -65,7 +69,7 @@ async function loadVotes(pollId) {
 }
 
 /* Construire la carte poll-card */
-function renderPollCard(poll, options, votes) {
+function renderPollCard(poll, options, votes, userVote) {
   const container = document.querySelector(".poll-grid");
 
   const voteCounts = {};
@@ -81,16 +85,14 @@ function renderPollCard(poll, options, votes) {
 
       <h4>Options</h4>
       ${options.length === 0 ? "<p>Aucune option pour le moment.</p>" : ""}
-      ${options
-        .map(
-          (opt) => `
-        <div class="option-item selectable-option" data-id="${opt.id}">
+      ${options.map((opt) => `
+      <div class="option-item selectable-option 
+           ${userVote?.option_id === opt.id ? "selected disabled" : ""}"
+           data-id="${opt.id}">
           <span>${opt.option_text}</span>
           <span class="vote-count">${voteCounts[opt.id] || 0} vote(s)</span>
-        </div>
-      `
-        )
-        .join("")}
+      </div>`).join("")
+      }
 
       <div class="poll-actions">
         <button id="add-option-btn" class="secondary-btn">Ajouter une option</button>
@@ -99,7 +101,6 @@ function renderPollCard(poll, options, votes) {
     </div>
   `;
 }
-
 
 /* Bouton : Ajouter une option */
 function setupAddOptionButton(pollId) {
@@ -117,38 +118,40 @@ function setupAddOptionButton(pollId) {
     }
 
     alert("Option ajoutée !");
-    init(); // recharger la page
+    init();
   });
 }
 
-async function setupVoting(pollId, options) {
+/* Gestion du vote */
+async function setupVoting(pollId, options, userVote) {
   const { data: { user } } = await supabase.auth.getUser();
 
-  document.querySelectorAll(".selectable-option").forEach((optDiv) => {
+  const optionDivs = document.querySelectorAll(".selectable-option");
+
+  // Si l'utilisateur a déjà voté alors on bloque tout
+  if (userVote) {
+    optionDivs.forEach(div => div.classList.add("disabled"));
+    return;
+  }
+
+  // Sinon, il peut voter
+  optionDivs.forEach((optDiv) => {
     optDiv.addEventListener("click", async () => {
       const optionId = optDiv.dataset.id;
 
-      // Retirer l'ancienne sélection
-      document.querySelectorAll(".selectable-option").forEach((o) =>
-        o.classList.remove("selected")
-      );
-
-      // Ajouter la nouvelle sélection
+      optionDivs.forEach((o) => o.classList.remove("selected"));
       optDiv.classList.add("selected");
 
-      // Envoyer le vote
       const { error } = await vote(pollId, optionId, user.id);
 
       if (error) {
-        alert("Vous avez déjà voté ou une erreur est survenue.");
+        alert("Erreur lors du vote.");
         return;
       }
 
-      // Recharger les résultats
       init();
     });
   });
 }
-
 
 init();
