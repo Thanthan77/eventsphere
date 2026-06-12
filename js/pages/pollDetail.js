@@ -25,8 +25,7 @@ async function init() {
   // Construire la carte
   renderPollCard(poll, options, votes);
 
-  // Setup des boutons
-  setupVoteButton(pollId, options);
+  setupVoting(pollId, options);
   setupAddOptionButton(pollId);
 }
 
@@ -85,32 +84,22 @@ function renderPollCard(poll, options, votes) {
       ${options
         .map(
           (opt) => `
-        <div class="option-item" data-id="${opt.id}">
-          ${opt.option_text}
-        </div>
-      `
-        )
-        .join("")}
-
-      <h4>Votes</h4>
-      ${options
-        .map(
-          (opt) => `
-        <div class="vote-item">
-          <strong>${opt.option_text}</strong> — ${voteCounts[opt.id] || 0} vote(s)
+        <div class="option-item selectable-option" data-id="${opt.id}">
+          <span>${opt.option_text}</span>
+          <span class="vote-count">${voteCounts[opt.id] || 0} vote(s)</span>
         </div>
       `
         )
         .join("")}
 
       <div class="poll-actions">
-        <button id="vote-btn" class="primary-btn">Voter</button>
         <button id="add-option-btn" class="secondary-btn">Ajouter une option</button>
       </div>
 
     </div>
   `;
 }
+
 
 /* Bouton : Ajouter une option */
 function setupAddOptionButton(pollId) {
@@ -132,41 +121,34 @@ function setupAddOptionButton(pollId) {
   });
 }
 
-/* Bouton : Voter */
-async function setupVoteButton(pollId, options) {
-  const btn = document.querySelector("#vote-btn");
-  if (!btn) return;
-
+async function setupVoting(pollId, options) {
   const { data: { user } } = await supabase.auth.getUser();
 
-  btn.addEventListener("click", async () => {
-    if (options.length === 0) {
-      alert("Aucune option disponible.");
-      return;
-    }
+  document.querySelectorAll(".selectable-option").forEach((optDiv) => {
+    optDiv.addEventListener("click", async () => {
+      const optionId = optDiv.dataset.id;
 
-    const choice = prompt(
-      "Entrez le numéro de l'option :\n\n" +
-        options.map((o, i) => `${i + 1}. ${o.option_text}`).join("\n")
-    );
+      // Retirer l'ancienne sélection
+      document.querySelectorAll(".selectable-option").forEach((o) =>
+        o.classList.remove("selected")
+      );
 
-    const index = parseInt(choice) - 1;
-    if (isNaN(index) || index < 0 || index >= options.length) {
-      alert("Choix invalide.");
-      return;
-    }
+      // Ajouter la nouvelle sélection
+      optDiv.classList.add("selected");
 
-    const optionId = options[index].id;
+      // Envoyer le vote
+      const { error } = await vote(pollId, optionId, user.id);
 
-    const { error } = await vote(pollId, optionId, user.id);
-    if (error) {
-      alert("Vous avez déjà voté ou une erreur est survenue.");
-      return;
-    }
+      if (error) {
+        alert("Vous avez déjà voté ou une erreur est survenue.");
+        return;
+      }
 
-    alert("Vote enregistré !");
-    init(); // recharger la page
+      // Recharger les résultats
+      init();
+    });
   });
 }
+
 
 init();

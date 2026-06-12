@@ -103,5 +103,33 @@
   cursor: pointer;
 }
 
+.selectable-option {
+  background: #f0f0ff;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.selectable-option:hover {
+  background: #e5e5ff;
+}
+
+.selectable-option.selected {
+  background: #4a2cff;
+  color: white;
+  border-color: #4a2cff;
+}
+
+.option-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+
 
 
