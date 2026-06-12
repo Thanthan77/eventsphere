@@ -1,5 +1,5 @@
 import { supabase } from "../utils/supabase.js";
-import { getPollOptions, getVotes, addPollOption, vote } from "../service/polls.js";
+import { getPollOptions, getVotes, addPollOption, vote ,changeVote} from "../service/polls.js";
 import { getEventById } from "../service/events.js";
 
 /* Charger un sondage complet */
@@ -95,6 +95,7 @@ function renderPollCard(poll, options, votes, userVote) {
       }
 
       <div class="poll-actions">
+        <button id="change-vote-btn" class="primary-btn">Changer mon vote</button>
         <button id="add-option-btn" class="secondary-btn">Ajouter une option</button>
       </div>
 
@@ -127,14 +128,19 @@ async function setupVoting(pollId, options, userVote) {
   const { data: { user } } = await supabase.auth.getUser();
 
   const optionDivs = document.querySelectorAll(".selectable-option");
+  const changeBtn = document.querySelector("#change-vote-btn");
 
-  // Si l'utilisateur a déjà voté alors on bloque tout
+  // Si l'utilisateur a déjà voté alors on désactiver les options
   if (userVote) {
     optionDivs.forEach(div => div.classList.add("disabled"));
-    return;
+
+    // Activer le changement de vote
+    changeBtn.addEventListener("click", () => {
+      optionDivs.forEach(div => div.classList.remove("disabled"));
+    });
   }
 
-  // Sinon, il peut voter
+  // Gestion du vote (normal ou changement)
   optionDivs.forEach((optDiv) => {
     optDiv.addEventListener("click", async () => {
       const optionId = optDiv.dataset.id;
@@ -142,7 +148,9 @@ async function setupVoting(pollId, options, userVote) {
       optionDivs.forEach((o) => o.classList.remove("selected"));
       optDiv.classList.add("selected");
 
-      const { error } = await vote(pollId, optionId, user.id);
+      const { error } = userVote
+        ? await changeVote(pollId, optionId)
+        : await vote(pollId, optionId, user.id);
 
       if (error) {
         alert("Erreur lors du vote.");
@@ -153,5 +161,6 @@ async function setupVoting(pollId, options, userVote) {
     });
   });
 }
+
 
 init();

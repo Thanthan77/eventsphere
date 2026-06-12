@@ -176,4 +176,12 @@ export async function deletePoll(pollId) {
   return { error };
 }
 
+export async function changeVote(pollId, optionId) {
+  return await supabase.rpc("change_vote", {
+    p_poll_id: pollId,
+    p_option_id: optionId
+  });
+}
+
+
 
