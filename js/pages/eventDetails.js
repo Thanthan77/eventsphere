@@ -114,9 +114,7 @@ function setupJoinButton(eventId) {
   btn.addEventListener("click", async () => {
     const { data: { user } } = await supabase.auth.getUser();
 
-    const { error } = await supabase
-      .from("event_members")
-      .insert({ event_id: eventId, user_id: user.id });
+    const { error } = await addMember(eventId, user.id);
 
     if (error) {
       alert("Impossible de rejoindre l'événement.");
