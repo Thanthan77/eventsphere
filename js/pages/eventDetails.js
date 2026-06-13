@@ -123,6 +123,7 @@ function setupJoinButton(eventId) {
     }
 
     alert("Vous avez rejoint l'événement !");
+    await new Promise(resolve => setTimeout(resolve, 200));
     init();
   });
 }
