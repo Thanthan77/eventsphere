@@ -44,6 +44,7 @@ async function loadPoll(pollId) {
 
   if (error || !data) {
     document.querySelector(".poll-grid").innerHTML = "<p>Erreur lors du chargement du sondage.</p>";
+    console.error("Erreur chargement sondage:", error);
     return null;
   }
 
