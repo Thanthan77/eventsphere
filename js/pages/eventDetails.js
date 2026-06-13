@@ -1,10 +1,12 @@
 import { supabase } from "../utils/supabase.js";
 import { getEventById, canInvite, canManageMembers } from "../service/events.js";
-import { getMembers, addMember, removeMember} from "../service/eventMembers.js";
-import { getPolls, createPoll,deletePoll } from "../service/polls.js";
+import { getMembers, addMember, removeMember } from "../service/eventMembers.js";
+import { getPolls, createPoll, deletePoll } from "../service/polls.js";
 
 async function isMember(eventId) {
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { data, error } = await supabase
     .from("event_members")
@@ -12,6 +14,11 @@ async function isMember(eventId) {
     .eq("event_id", eventId)
     .eq("user_id", user.id)
     .maybeSingle();
+
+  if (error) {
+    console.error("isMember error:", error);
+    return false;
+  }
 
   return !!data;
 }
@@ -35,50 +42,71 @@ async function init() {
   }
 
   const event = eventArray[0];
-   const member = await isMember(eventId);
 
-  await renderEvent(event,member);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!member) {
+  const member = await isMember(eventId);
+  const isCreator = event.created_by === user.id;
+
+  // 🔥 Gestion privé / public
+  if (event.is_private) {
+    // ÉVÉNEMENT PRIVÉ : visible seulement par créateur ou membres
+    if (!isCreator && !member) {
+      document.getElementById("event-container").innerHTML =
+        "<p>Cet événement est privé. Vous devez être invité pour y accéder.</p>";
+      return;
+    }
+  }
+
+  // À partir d'ici : on peut afficher l'événement
+  await renderEvent(event, member, isCreator);
+
+  if (!member && !event.is_private) {
+    // Public + pas membre → bouton rejoindre
     setupJoinButton(eventId);
     return;
   }
 
-  setupInviteButton(eventId, event);
+  // Membre ou créateur
+  setupInviteButton(eventId, event, isCreator);
   setupCreatePollButton(eventId, event);
 
   await loadMembers(eventId, event);
   await loadPolls(eventId);
 }
 
-async function renderEvent(event,isMember) {
-  const { data: { user } } = await supabase.auth.getUser();
-  const canUserInvite = event.created_by === user.id;
+async function renderEvent(event, isMember, isCreator) {
+  document.getElementById("event-container").innerHTML = `
+    <h2>${event.title}</h2>
+    <p>${event.description}</p>
+    <p><strong>Type :</strong> ${event.is_private ? "Privé" : "Public"}</p>
 
- document.getElementById("event-container").innerHTML = `
-  <h2>${event.title}</h2>
-  <p>${event.description}</p>
-  <p><strong>Type :</strong> ${event.is_private ? "Privé" : "Public"}</p>
+    ${
+      !isMember && !event.is_private
+        ? `<button id="join-btn" class="primary-btn">Rejoindre l'événement</button>`
+        : `
+          <h3>Participants</h3>
+          <div class="section-block" id="members-list">Chargement...</div>
 
-  ${
-    !isMember
-      ? `<button id="join-btn" class="primary-btn">Rejoindre l'événement</button>`
-      : `
-        <h3>Participants</h3>
-        <div class="section-block" id="members-list">Chargement...</div>
+          <h3>Sondages</h3>
+          <div class="section-block" id="polls-list">Chargement...</div>
+          <button id="create-poll-btn">Créer un sondage</button>
+        `
+    }
 
-        <h3>Sondages</h3>
-        <div class="section-block" id="polls-list">Chargement...</div>
-        <button id="create-poll-btn">Créer un sondage</button>
-      `
-  }
-`;
-
+    ${
+      isCreator
+        ? `<button id="invite-btn" class="secondary-btn">Inviter un membre</button>`
+        : ""
+    }
+  `;
 }
 
-function setupInviteButton(eventId, event) {
+function setupInviteButton(eventId, event, isCreator) {
   const btn = document.querySelector("#invite-btn");
-  if (!btn) return;
+  if (!btn || !isCreator) return;
 
   btn.addEventListener("click", async () => {
     const email = prompt("Entrez le courriel de l'utilisateur à inviter :");
@@ -98,6 +126,7 @@ function setupInviteButton(eventId, event) {
     const { error: addError } = await addMember(eventId, user.id);
 
     if (addError) {
+      console.error("addMember error:", addError);
       alert("Impossible d'ajouter ce membre (peut-être déjà invité).");
       return;
     }
@@ -112,7 +141,9 @@ function setupJoinButton(eventId) {
   if (!btn) return;
 
   btn.addEventListener("click", async () => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     const { error } = await addMember(eventId, user.id);
 
@@ -123,11 +154,10 @@ function setupJoinButton(eventId) {
     }
 
     alert("Vous avez rejoint l'événement !");
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise((resolve) => setTimeout(resolve, 200));
     init();
   });
 }
-
 
 async function loadMembers(eventId, event) {
   const creatorId = event.created_by;
@@ -150,15 +180,15 @@ async function loadMembers(eventId, event) {
   membersList.innerHTML = members
     .map(
       (m) => `
-      <div class="member-item">
-        <p>${m.profiles.full_name} (${m.profiles.email}) — ${m.role}</p>
-        ${
-          canUserRemove && m.profiles.id !== creatorId
-            ? `<button class="open-remove-btn" data-user="${m.profiles.id}">Retirer</button>`
-            : ""
-        }
-      </div>
-    `
+        <div class="member-item">
+          <p>${m.profiles.full_name} (${m.profiles.email}) — ${m.role}</p>
+          ${
+            canUserRemove && m.profiles.id !== creatorId
+              ? `<button class="open-remove-btn" data-user="${m.profiles.id}">Retirer</button>`
+              : ""
+          }
+        </div>
+      `
     )
     .join("");
 
@@ -204,10 +234,10 @@ function setupCreatePollButton(eventId, event) {
 async function loadPolls(eventId) {
   const pollsList = document.getElementById("polls-list");
 
-  // Récupérer l'utilisateur courant
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  // Récupérer l'événement pour savoir qui est le créateur
   const { data: eventArray } = await getEventById(eventId);
   const event = eventArray[0];
   const isCreator = event.created_by === user.id;
@@ -230,18 +260,21 @@ async function loadPolls(eventId) {
   pollsList.innerHTML = visiblePolls
     .map(
       (p) => `
-      <div class="poll-item">
-        <p><strong>${p.question}</strong></p>
-        <div class="poll-actions">
-          <button class="open-poll-btn" data-id="${p.id}">Voir</button>
-          ${isCreator ? `<button class="delete-poll-btn" data-id="${p.id}">Supprimer</button>` : ""}
+        <div class="poll-item">
+          <p><strong>${p.question}</strong></p>
+          <div class="poll-actions">
+            <button class="open-poll-btn" data-id="${p.id}">Voir</button>
+            ${
+              isCreator
+                ? `<button class="delete-poll-btn" data-id="${p.id}">Supprimer</button>`
+                : ""
+            }
+          </div>
         </div>
-      </div>
-    `
+      `
     )
     .join("");
 
-  // Bouton voir plus
   if (polls.length > MAX) {
     pollsList.innerHTML += `
       <button id="show-more-polls">Voir tous les sondages (${polls.length})</button>
@@ -256,25 +289,27 @@ async function loadPolls(eventId) {
       pollsList.innerHTML = polls
         .map(
           (p) => `
-          <div class="poll-item">
-            <p><strong>${p.question}</strong></p>
-            <div class="poll-actions">
-              <button class="open-poll-btn" data-id="${p.id}">Voir</button>
-              ${isCreator ? `<button class="delete-poll-btn" data-id="${p.id}">Supprimer</button>` : ""}
+            <div class="poll-item">
+              <p><strong>${p.question}</strong></p>
+              <div class="poll-actions">
+                <button class="open-poll-btn" data-id="${p.id}">Voir</button>
+                ${
+                  isCreator
+                    ? `<button class="delete-poll-btn" data-id="${p.id}">Supprimer</button>`
+                    : ""
+                }
+              </div>
             </div>
-          </div>
-        `
+          `
         )
         .join("");
 
-      // Réattacher les listeners pour la version complète
       attachPollListeners(eventId, isCreator);
     });
   }
 }
 
 function attachPollListeners(eventId, isCreator) {
-  // Listener pour voir
   document.querySelectorAll(".open-poll-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const pollId = btn.dataset.id;
@@ -282,7 +317,6 @@ function attachPollListeners(eventId, isCreator) {
     });
   });
 
-  // Listener pour supprimer
   if (isCreator) {
     document.querySelectorAll(".delete-poll-btn").forEach((btn) => {
       btn.addEventListener("click", async () => {
@@ -304,7 +338,5 @@ function attachPollListeners(eventId, isCreator) {
     });
   }
 }
-
-
 
 init();
