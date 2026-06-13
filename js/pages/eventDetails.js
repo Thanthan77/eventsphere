@@ -1,7 +1,20 @@
 import { supabase } from "../utils/supabase.js";
 import { getEventById, canInvite, canManageMembers } from "../service/events.js";
-import { getMembers, addMember, removeMember } from "../service/eventMembers.js";
+import { getMembers, addMember, removeMember} from "../service/eventMembers.js";
 import { getPolls, createPoll,deletePoll } from "../service/polls.js";
+
+async function isMember(eventId) {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  const { data, error } = await supabase
+    .from("event_members")
+    .select("id")
+    .eq("event_id", eventId)
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  return !!data;
+}
 
 async function init() {
   const params = new URLSearchParams(window.location.search);
@@ -22,8 +35,14 @@ async function init() {
   }
 
   const event = eventArray[0];
+   const member = await isMember(eventId);
 
-  await renderEvent(event);
+  await renderEvent(event,member);
+
+  if (!member) {
+    setupJoinButton(eventId);
+    return;
+  }
 
   setupInviteButton(eventId, event);
   setupCreatePollButton(eventId, event);
@@ -32,23 +51,29 @@ async function init() {
   await loadPolls(eventId);
 }
 
-async function renderEvent(event) {
+async function renderEvent(event,isMember) {
   const { data: { user } } = await supabase.auth.getUser();
   const canUserInvite = event.created_by === user.id;
 
-  document.getElementById("event-container").innerHTML = `
-    <h2>${event.title ?? "Titre introuvable"}</h2>
-    <p>${event.description ?? "Aucune description"}</p>
-    <p><strong>Type :</strong> ${event.is_private ? "Privé" : "Public"}</p>
+ document.getElementById("event-container").innerHTML = `
+  <h2>${event.title}</h2>
+  <p>${event.description}</p>
+  <p><strong>Type :</strong> ${event.is_private ? "Privé" : "Public"}</p>
 
-    <h3>Participants</h3>
-    <div class="section-block" id="members-list">Chargement...</div>
-    ${canUserInvite ? `<button id="invite-btn">Inviter quelqu'un</button>` : ""}
+  ${
+    !isMember
+      ? `<button id="join-btn" class="primary-btn">Rejoindre l'événement</button>`
+      : `
+        <h3>Participants</h3>
+        <div class="section-block" id="members-list">Chargement...</div>
 
-    <h3>Sondages</h3>
-    <div class="section-block" id="polls-list">Chargement...</div>
-    <button id="create-poll-btn">Créer un sondage</button>
-  `;
+        <h3>Sondages</h3>
+        <div class="section-block" id="polls-list">Chargement...</div>
+        <button id="create-poll-btn">Créer un sondage</button>
+      `
+  }
+`;
+
 }
 
 function setupInviteButton(eventId, event) {
@@ -81,6 +106,28 @@ function setupInviteButton(eventId, event) {
     await loadMembers(eventId, event);
   });
 }
+
+function setupJoinButton(eventId) {
+  const btn = document.querySelector("#join-btn");
+  if (!btn) return;
+
+  btn.addEventListener("click", async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+
+    const { error } = await supabase
+      .from("event_members")
+      .insert({ event_id: eventId, user_id: user.id });
+
+    if (error) {
+      alert("Impossible de rejoindre l'événement.");
+      return;
+    }
+
+    alert("Vous avez rejoint l'événement !");
+    init();
+  });
+}
+
 
 async function loadMembers(eventId, event) {
   const creatorId = event.created_by;
