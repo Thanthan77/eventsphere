@@ -120,6 +120,7 @@ function setupJoinButton(eventId) {
 
     if (error) {
       alert("Impossible de rejoindre l'événement.");
+      console.error("Erreur join event:", error);
       return;
     }
 
