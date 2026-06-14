@@ -33,26 +33,29 @@ async function init() {
   const event = access.event;
   const isCreator = access.is_creator;
   const isMember = access.is_member;
+  const canJoin = access.can_join;
+  const canInvite = access.can_invite;
+  const canManage = access.can_manage;
 
-  await renderEvent(event, isMember, isCreator, access.can_join);
+  await renderEvent(event, isMember, isCreator, canJoin, canInvite);
 
-  if (access.can_join) {
+  if (canJoin) {
     setupJoinButton(eventId);
     return;
   }
 
-  if (access.can_invite) {
+  if (canInvite) {
     setupInviteButton(eventId, event);
   }
 
   if (isMember) {
     setupCreatePollButton(eventId, event);
-    await loadMembers(eventId, event);
-    await loadPolls(eventId);
+    await loadMembers(eventId, event, canManage);
+    await loadPolls(eventId, canManage);
   }
 }
 
-async function renderEvent(event, isMember, isCreator, canJoin) {
+async function renderEvent(event, isMember, isCreator, canJoin, canInvite) {
   document.getElementById("event-container").innerHTML = `
     <h2>${event.title}</h2>
     <p>${event.description}</p>
@@ -72,7 +75,7 @@ async function renderEvent(event, isMember, isCreator, canJoin) {
     }
 
     ${
-      isCreator
+      canInvite
         ? `<button id="invite-btn" class="secondary-btn">Inviter un membre</button>`
         : ""
     }
@@ -133,7 +136,7 @@ function setupInviteButton(eventId, event) {
   });
 }
 
-async function loadMembers(eventId, event) {
+async function loadMembers(eventId, event, canManage) {
   const creatorId = event.created_by;
   const membersList = document.getElementById("members-list");
 
@@ -155,7 +158,7 @@ async function loadMembers(eventId, event) {
         <div class="member-item">
           <p>${m.profiles.full_name} (${m.profiles.email}) — ${m.role}</p>
           ${
-            m.profiles.id !== creatorId
+            canManage && m.profiles.id !== creatorId
               ? `<button class="open-remove-btn" data-user="${m.profiles.id}">Retirer</button>`
               : ""
           }
@@ -178,7 +181,7 @@ async function loadMembers(eventId, event) {
       }
 
       alert("Membre retiré !");
-      await loadMembers(eventId, event);
+      await loadMembers(eventId, event, canManage);
     });
   });
 }
@@ -203,7 +206,7 @@ function setupCreatePollButton(eventId, event) {
   });
 }
 
-async function loadPolls(eventId) {
+async function loadPolls(eventId, canManage) {
   const pollsList = document.getElementById("polls-list");
 
   const { data: polls, empty, error } = await getPolls(eventId);
@@ -228,7 +231,11 @@ async function loadPolls(eventId) {
           <p><strong>${p.question}</strong></p>
           <div class="poll-actions">
             <button class="open-poll-btn" data-id="${p.id}">Voir</button>
-            <button class="delete-poll-btn" data-id="${p.id}">Supprimer</button>
+            ${
+              canManage
+                ? `<button class="delete-poll-btn" data-id="${p.id}">Supprimer</button>`
+                : ""
+            }
           </div>
         </div>
       `
@@ -241,7 +248,7 @@ async function loadPolls(eventId) {
     `;
   }
 
-  attachPollListeners(eventId);
+  attachPollListeners(eventId, canManage);
 
   const showMoreBtn = document.getElementById("show-more-polls");
   if (showMoreBtn) {
@@ -253,19 +260,23 @@ async function loadPolls(eventId) {
               <p><strong>${p.question}</strong></p>
               <div class="poll-actions">
                 <button class="open-poll-btn" data-id="${p.id}">Voir</button>
-                <button class="delete-poll-btn" data-id="${p.id}">Supprimer</button>
+                ${
+                  canManage
+                    ? `<button class="delete-poll-btn" data-id="${p.id}">Supprimer</button>`
+                    : ""
+                }
               </div>
             </div>
           `
         )
         .join("");
 
-      attachPollListeners(eventId);
+      attachPollListeners(eventId, canManage);
     });
   }
 }
 
-function attachPollListeners(eventId) {
+function attachPollListeners(eventId, canManage) {
   document.querySelectorAll(".open-poll-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const pollId = btn.dataset.id;
@@ -273,23 +284,25 @@ function attachPollListeners(eventId) {
     });
   });
 
-  document.querySelectorAll(".delete-poll-btn").forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const pollId = btn.dataset.id;
+  if (canManage) {
+    document.querySelectorAll(".delete-poll-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const pollId = btn.dataset.id;
 
-      if (!confirm("Supprimer ce sondage ?")) return;
+        if (!confirm("Supprimer ce sondage ?")) return;
 
-      const { error } = await deletePoll(pollId);
+        const { error } = await deletePoll(pollId);
 
-      if (error) {
-        alert("Impossible de supprimer le sondage.");
-        return;
-      }
+        if (error) {
+          alert("Impossible de supprimer le sondage.");
+          return;
+        }
 
-      alert("Sondage supprimé !");
-      await loadPolls(eventId);
+        alert("Sondage supprimé !");
+        await loadPolls(eventId, canManage);
+      });
     });
-  });
+  }
 }
 
 init();
