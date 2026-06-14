@@ -41,7 +41,7 @@ async function loadRecentEvents() {
       <h3>${event.title}</h3>
       <p class="event-meta">${event.is_private ? "Privé" : "Public"}</p>
       <p>${event.description}</p>
-      <button class="open-event-btn">Ouvrir</button>
+      <button class="btn open-event-btn">Ouvrir</button>
     `;
 
     card.querySelector(".open-event-btn").addEventListener("click", () => {
@@ -84,7 +84,7 @@ async function loadRecentPolls() {
     card.innerHTML = `
       <h4>${poll.question}</h4>
       <p>${poll.vote_count} votes</p>
-      <button onclick="window.location.href='pollDetail.html?id=${poll.id}'">
+      <button class="btn" onclick="window.location.href='pollDetail.html?id=${poll.id}'">
         Voter
       </button>
     `;
