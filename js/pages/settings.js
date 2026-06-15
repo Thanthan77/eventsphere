@@ -1,3 +1,4 @@
+import { supabase } from "../utils/supabase.js";
 import { getUser, extractUsername, updateUserProfile } from "../service/user.js";
 
 let currentUser = null;
