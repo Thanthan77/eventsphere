@@ -111,18 +111,30 @@ body {
   cursor: pointer;
 }
 
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
 .sidebar-avatar {
-  width: 60px;
-  height: 60px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: #4a2cff;
   color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
-  margin: 0 auto 25px;
   border: 3px solid #e5e5ff;
   cursor: pointer;
 }
