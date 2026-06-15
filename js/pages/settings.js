@@ -33,4 +33,29 @@ document.getElementById("save-btn").addEventListener("click", async () => {
   }
 });
 
+document.getElementById("delete-account-btn").addEventListener("click", async () => {
+  const confirmDelete = confirm(
+    "Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible."
+  );
+
+  if (!confirmDelete) return;
+
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+
+  const { error } = await supabase.rpc("delete_user_completely", {
+    p_user_id: user.id
+  });
+
+  if (error) {
+    alert("Erreur lors de la suppression du compte.");
+    return;
+  }
+
+  alert("Votre compte a été supprimé.");
+  window.location.href = "login.html";
+});
+
+
 init();
