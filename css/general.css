@@ -14,6 +14,14 @@ body {
   height: 100vh;
 }
 
+/* Titres principaux */
+h1,
+h2 {
+  color: #4a2cff;
+  font-weight: 700;
+}
+
+
 .avatar {
   width: 42px;
   height: 42px;
