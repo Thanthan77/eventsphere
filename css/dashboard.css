@@ -3,124 +3,42 @@
   grid-template-columns: 2fr 1fr;
   gap: 40px;
   margin-top: 35px;
+  padding-bottom: 40px;
 }
 
-/* Titre */
 .section-title {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
   color: #333;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
-/* Événements Récents */
-.events-list {
+.events-list,
+.polls-list {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 }
 
 #dashboard-events {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
+  gap: 20px;
 }
 
-/* Événements */
-.event-card {
-  background: white;
-  padding: 18px;
-  border-radius: 12px;
-  border: 1px solid #e5e5e5;
-  transition: 0.25s;
-  min-height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.event-card:hover {
-  border-color: #4a2cff;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
-}
-
-.event-card h3 {
-  color: #4a2cff;
-  font-size: 17px;
-  font-weight: bold;
-  margin-bottom: 6px;
-}
-
-.event-meta {
-  font-size: 13px;
-  color: #777;
-  margin-bottom: 8px;
-}
-
-.event-card p {
-  color: #555;
-  margin-bottom: 10px;
-}
-
-/* Sondages */
-.polls-list {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
+.event-card,
 .poll-card {
   background: white;
-  padding: 16px;
+  padding: 20px;
   border-radius: 12px;
   border: 1px solid #e5e5e5;
-  min-height: 120px;
+  min-height: 150px;
   transition: 0.25s;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.04);
 }
 
+.event-card:hover,
 .poll-card:hover {
   border-color: #4a2cff;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
-}
-
-.poll-card h4 {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 6px;
-}
-
-.poll-card p {
-  color: #555;
-  margin-bottom: 10px;
-}
-
-/* Boutons */
-.btn {
-  padding: 8px 14px;
-  background: #4a2cff;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: 0.2s;
-}
-
-.btn:hover {
-  background: #3a22cc;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .dashboard-section {
-    grid-template-columns: 1fr;
-  }
-
-  #dashboard-events {
-    grid-template-columns: 1fr;
-  }
+  box-shadow: 0 8px 22px rgba(0,0,0 ,0.08);
 }
