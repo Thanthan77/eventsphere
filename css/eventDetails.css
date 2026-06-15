@@ -9,7 +9,7 @@
   padding: 20px 40px;
 }
 
-/* Grille identique à PollDetails */
+
 .event-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -17,7 +17,7 @@
   width: 100%;
 }
 
-/* Carte identique à PollDetails */
+
 .event-card {
   background: white;
   padding: 30px 35px;

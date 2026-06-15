@@ -39,8 +39,8 @@ async function loadRecentEvents() {
 
     card.innerHTML = `
       <h3>${event.title}</h3>
-      <p class="event-meta">${event.is_private ? "Privé" : "Public"}</p>
       <p>${event.description}</p>
+      <p class="event-meta">${event.is_private ? "Privé" : "Public"}</p>
       <button class="primary-btn open-event-btn">Ouvrir</button>
     `;
 

@@ -37,8 +37,29 @@
   box-shadow: 0 6px 18px rgba(0,0,0,0.04);
 }
 
+.event-card h2 {
+  color: #4a2cff;
+  margin-bottom: 10px;
+}
+
+.event-card h3 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  color: #4a2cff;
+}
+
+.event-card p {
+  margin-bottom: 8px;
+  color: #555;
+}
+
 .event-card:hover,
 .poll-card:hover {
   border-color: #4a2cff;
   box-shadow: 0 8px 22px rgba(0,0,0 ,0.08);
+}
+
+.poll-card h3 {
+  margin-bottom: 10px;
+  color: #4a2cff;
 }
