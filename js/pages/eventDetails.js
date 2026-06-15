@@ -132,7 +132,7 @@ function setupInviteButton(eventId, event) {
     }
 
     alert("Utilisateur invité avec succès !");
-    await loadMembers(eventId, event);
+    await init();
   });
 }
 
