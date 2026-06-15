@@ -12,7 +12,7 @@ async function loadRecentEvents() {
 
   // Reset
   container.innerHTML = `
-    <h2>Événements récents</h2>
+    <h3>Événements récents</h3>
     <div id="dashboard-events"></div>
   `;
 
