@@ -55,7 +55,7 @@ document.getElementById("delete-account-btn").addEventListener("click", async ()
   }
 
   alert("Votre compte a été supprimé.");
-  window.location.href = "login.html";
+  window.location.href = "../login.html";
 });
 
 
