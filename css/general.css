@@ -148,19 +148,8 @@ h3 {
 }
 
 
-.hamburger {
-  display: none;
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  background: none;
-  border: none;
-  font-size: 28px;
-  cursor: pointer;
-  z-index: 1001;
-}
 
-/* === HAMBURGER === */
+
 .hamburger {
   display: none;
   position: absolute;
@@ -173,7 +162,7 @@ h3 {
   z-index: 1002;
 }
 
-/* === OVERLAY (clic pour fermer) === */
+/* Clic en dehors pour fermer */
 .overlay {
   display: none;
   position: fixed;
