@@ -103,3 +103,13 @@ function setupEventFilters(events) {
 }
 
 init();
+
+const description = document.getElementById("event-description");
+
+description.addEventListener("input", () => {
+  const max = 150;
+  if (description.value.length > max) {
+    description.value = description.value.slice(0, max);
+    alert("La description est limitée à 150 caractères.");
+  }
+});
