@@ -107,9 +107,9 @@ init();
 const description = document.getElementById("event-description");
 
 description.addEventListener("input", () => {
-  const max = 150;
+  const max = 60;
   if (description.value.length > max) {
     description.value = description.value.slice(0, max);
-    alert("La description est limitée à 150 caractères.");
+    alert("La description est limitée à 60 caractères.");
   }
 });
