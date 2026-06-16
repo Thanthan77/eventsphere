@@ -21,6 +21,11 @@ h3 {
   font-weight: 700;
 }
 
+.content h2 {
+  margin-bottom: 25px;
+}
+
+
 
 .avatar {
   width: 42px;
