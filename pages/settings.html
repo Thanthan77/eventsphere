@@ -3,65 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Paramètres - EventSphere</title>
+  <title>Profil - EventSphere</title>
+
   <link rel="stylesheet" href="../css/general.css">
+  <link rel="stylesheet" href="../css/gridDetail.css">
   <link rel="stylesheet" href="../css/settings.css">
 </head>
+
 <body>
 
 <div class="layout">
+
   <button id="hamburger" class="hamburger">☰</button>
   <div id="overlay" class="overlay"></div>
-  <aside class="sidebar">
-  
-     <div class="sidebar-header">
-        <h2>EventSphere</h2>
-      </div>
 
-     <nav class="sidebar-nav">
+  <aside class="sidebar">
+
+    <div class="sidebar-header">
+      <h2>EventSphere</h2>
+    </div>
+
+    <nav class="sidebar-nav">
       <a href="dashboard.html">Accueil</a>
       <a href="events.html">Mes événements</a>
       <a href="polls.html">Sondages</a>
       <a href="settings.html" class="active">Profil</a>
-     </nav>
+    </nav>
 
-     <button id="logout" class="logout-btn">Déconnexion</button>
-    </aside>
+    <button id="logout" class="logout-btn">Déconnexion</button>
+  </aside>
 
   <main class="content">
-      <h2>Paramètres du profil</h2>
-    <div class="settings-container">
 
-      <div class="profile-header">
-        <div class="profile-avatar" id="profile-avatar"></div>
-        <div>
-          <h3 id="profile-name"></h3>
-          <p id="profile-email"></p>
+    <h2>Paramètres du profil</h2>
+
+    <div class="detail-grid">
+      <div class="detail-card">
+
+        <div class="profile-header">
+          <div class="profile-avatar" id="profile-avatar"></div>
+          <div>
+            <h3 id="profile-name"></h3>
+            <p id="profile-email"></p>
+          </div>
         </div>
+
+        <label>Nom</label>
+        <input type="text" id="display-name">
+
+        <label>Email</label>
+        <input type="email" id="email" disabled>
+
+        <button class="save-btn" id="save-btn">Enregistrer</button>
+
+        <div class="danger-zone">
+          <h4>Zone dangereuse</h4>
+          <button id="delete-account-btn" class="delete-btn">Supprimer mon compte</button>
+        </div>
+
       </div>
-
-      <label>Nom</label>
-      <input type="text" id="display-name">
-
-      <label>Email</label>
-      <input type="email" id="email" disabled>
-
-      <button class="save-btn" id="save-btn">Enregistrer</button>
-
-      <div class="danger-zone">
-        <h4>Zone dangereuse</h4>
-        <button id="delete-account-btn" class="delete-btn">Supprimer mon compte</button>
-      </div>
-
-
     </div>
 
   </main>
 
 </div>
 
-  <script type="module" src="../js/pages/settings.js"></script>
-  <script type="module" src="../js/pages/logout.js"></script>
-  <script type="module" src="../js/utils/sidebarMobile.js"></script>
+<script type="module" src="../js/pages/settings.js"></script>
+<script type="module" src="../js/pages/logout.js"></script>
+<script type="module" src="../js/utils/sidebarMobile.js"></script>
+
 </body>
 </html>
