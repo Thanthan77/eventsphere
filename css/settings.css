@@ -44,22 +44,31 @@
   box-shadow: 0 0 0 3px rgba(74,44,255,0.15);
 }
 
-/* Bouton enregistrer */
-.save-btn {
-  width: 100%;
-  padding: 12px;
-  background: #4a2cff;
-  color: white;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
+/* Boutons modernes */
+.save-btn,
+.delete-btn {
+  width: fit-content;
+  padding: 12px 26px;
+  margin: 10px auto 0;
+  border-radius: 10px;
   font-size: 15px;
   font-weight: 500;
+  cursor: pointer;
+  border: none;
+  display: block;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
   transition: 0.2s;
+}
+
+/* Bouton enregistrer */
+.save-btn {
+  background: #4a2cff;
+  color: white;
 }
 
 .save-btn:hover {
   background: #3a22cc;
+  transform: translateY(-2px);
 }
 
 /* Danger zone */
@@ -67,6 +76,7 @@
   margin-top: 40px;
   padding-top: 25px;
   border-top: 1px solid #eee;
+  text-align: center;
 }
 
 .danger-zone h4 {
@@ -76,20 +86,15 @@
   font-weight: 600;
 }
 
+/* Bouton supprimer */
 .delete-btn {
-  width: 100%;
-  padding: 12px;
   background: #ff4d4d;
   color: white;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-  transition: 0.2s;
 }
 
 .delete-btn:hover {
   background: #d93636;
+  transform: translateY(-2px);
 }
 
 /* Responsive */
@@ -105,8 +110,9 @@
     font-size: 22px;
   }
 
-  .save-btn, .delete-btn {
-    padding: 14px;
+  .save-btn,
+  .delete-btn {
+    padding: 14px 28px;
     font-size: 16px;
   }
 }
