@@ -147,4 +147,41 @@ h3 {
   cursor: pointer;
 }
 
+/* Responsive */
+@media (max-width: 768px) {
+  .layout { 
+    flex-direction: column; height: auto; 
+  }
+  .sidebar {
+    width: 100%; height: auto; padding: 15px 20px;
+    border-right: none; border-bottom: 1px solid #e5e5e5;
+    flex-direction: row; justify-content: space-between; align-items: center;
+  }
+  .sidebar nav { 
+    flex-direction: row; gap: 15px;
+   }
+  .sidebar nav a { 
+    padding: 8px 10px; font-size: 14px; 
+  }
+  .logout-btn { 
+    display: none; 
+  }
+  .content { 
+    padding: 20px; 
+  }
+}
+
+@media (max-width: 480px) {
+  h2 { 
+    font-size: 20px; 
+  }
+  h3 { 
+    font-size: 18px; 
+  }
+  .primary-btn, .secondary-btn {
+    width: 100%; padding: 12px; font-size: 16px;
+  }
+}
+
+
 

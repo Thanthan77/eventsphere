@@ -84,3 +84,31 @@ body {
   margin-bottom: 20px;
   color: #555;
 }
+
+/* Responsive */
+@media (max-width: 480px) {
+  body {
+     height: auto; padding: 40px 0; align-items: flex-start; 
+    }
+  .auth-container { 
+    width: 90%; padding: 30px 20px; border-radius: 10px; 
+  }
+  .auth-container h1 { 
+    font-size: 22px; 
+  }
+  .auth-container h2 { 
+    font-size: 18px; 
+  }
+  .auth-container input { 
+    padding: 14px; font-size: 16px; 
+  }
+  .auth-container button { 
+    padding: 14px; font-size: 17px; 
+  }
+  .auth-container a { 
+    font-size: 15px; 
+  }
+  .desc { 
+    font-size: 14px; 
+  }
+}

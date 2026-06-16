@@ -157,3 +157,40 @@
   border: none;
   cursor: pointer;
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .events-header { 
+    flex-direction: column; align-items: flex-start; gap: 15px; 
+  }
+  .filters { 
+    flex-wrap: wrap; gap: 8px; 
+  }
+  .create-btn { 
+    width: 100%; text-align: center; 
+  }
+  .event-grid { 
+    grid-template-columns: 1fr; gap: 16px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .event-card { 
+    padding: 18px; border-radius: 10px; 
+  }
+  .event-card h3 { 
+    font-size: 17px; 
+  }
+  .event-meta { 
+    font-size: 12px; 
+  }
+  .event-card button { 
+    width: 100%; padding: 12px; font-size: 15px; 
+  }
+  .modal-content { 
+    width: 90%; padding: 20px; 
+  }
+  #save-event-btn, #close-modal-btn { 
+    width: 100%; padding: 12px; font-size: 15px; 
+  }
+}

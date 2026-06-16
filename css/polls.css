@@ -116,3 +116,26 @@
   opacity: 0.5;
   pointer-events: none;
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .poll-grid { grid-template-columns: 1fr; gap: 15px; }
+}
+
+@media (max-width: 480px) {
+  .poll-card { 
+    padding: 16px; border-radius: 10px; 
+  }
+  .poll-card h3 { 
+    font-size: 18px; 
+  }
+  .poll-tags { 
+    flex-wrap: wrap; gap: 6px; 
+  }
+  .poll-card button { 
+    width: 100%; padding: 12px; font-size: 15px; 
+  }
+  .poll-actions { 
+    flex-direction: column; gap: 10px; 
+  }
+}

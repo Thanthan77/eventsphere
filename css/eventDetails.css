@@ -157,3 +157,41 @@
   gap: 10px;
   align-items: center;
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .event-wrapper { 
+    padding: 15px 20px; 
+  }
+  .event-card { 
+    padding: 22px; max-width: 100%; 
+  }
+}
+
+@media (max-width: 480px) {
+  .event-card { 
+    padding: 18px; border-radius: 10px; 
+  }
+  .event-card h2 {
+     font-size: 20px; 
+    }
+  .event-card h3 { 
+    font-size: 18px; margin-top: 20px; 
+  }
+  .event-card p { 
+    font-size: 14px; 
+  }
+  .section-block { 
+    padding: 15px; border-radius: 8px; 
+  }
+  .member-item, .poll-item {
+    flex-direction: column; align-items: flex-start; gap: 10px;
+  }
+  .poll-actions { 
+    flex-direction: column; width: 100%; gap: 8px; 
+  }
+  #invite-btn, #create-poll-btn,
+  .open-remove-btn, .open-poll-btn, .delete-poll-btn {
+    width: 100%; padding: 12px; font-size: 15px;
+  }
+}

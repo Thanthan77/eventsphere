@@ -120,7 +120,7 @@ function setupInviteButton(eventId, event) {
       .single();
 
     if (userError || !user) {
-      alert("Aucun utilisateur trouvé avec ce courriel.");
+      alert("Aucun utilisateur trouvé. Demandez-lui de créer un compte sur EventSphere.");
       return;
     }
 
