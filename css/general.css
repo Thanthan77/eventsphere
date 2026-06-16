@@ -147,41 +147,85 @@ h3 {
   cursor: pointer;
 }
 
+
+.hamburger {
+  display: none;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
-  .layout { 
-    flex-direction: column; height: auto; 
+
+  .hamburger {
+    display: block;
   }
+
+  /* Sidebar devient un menu coulissant */
   .sidebar {
-    width: 100%; height: auto; padding: 15px 20px;
-    border-right: none; border-bottom: 1px solid #e5e5e5;
-    flex-direction: row; justify-content: space-between; align-items: center;
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100%;
+    width: 240px;
+    background: white;
+    padding: 25px 20px;
+    border-right: 1px solid #e5e5e5;
+    transition: 0.3s ease;
+    z-index: 1000;
+    flex-direction: column;
+    justify-content: flex-start;
   }
-  .sidebar nav { 
-    flex-direction: row; gap: 15px;
-   }
-  .sidebar nav a { 
-    padding: 8px 10px; font-size: 14px; 
+
+  /* Sidebar ouverte */
+  .sidebar.open {
+    left: 0;
   }
-  .logout-btn { 
-    display: none; 
+
+  /* Navigation verticale (mobile) */
+  .sidebar nav {
+    flex-direction: column;
+    gap: 12px;
   }
-  .content { 
-    padding: 20px; 
+
+  .sidebar nav a {
+    padding: 12px 10px;
+    font-size: 15px;
+  }
+
+  /* Le contenu descend sous le header mobile */
+  .content {
+    padding: 20px;
+    margin-top: 60px;
+  }
+
+  /* Bouton logout caché dans le header mobile */
+  .logout-btn {
+    margin-top: auto;
   }
 }
 
 @media (max-width: 480px) {
+
   h2 { 
     font-size: 20px; 
   }
   h3 { 
     font-size: 18px; 
   }
-  .primary-btn, .secondary-btn {
-    width: 100%; padding: 12px; font-size: 16px;
+
+  .primary-btn,
+  .secondary-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
   }
 }
-
 
 
