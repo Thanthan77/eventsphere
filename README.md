@@ -86,7 +86,7 @@ Le frontend est développé en **HTML / CSS / JavaScript**, et le site est dépl
 
 ##  Structure du projet
 
-```txt
+```plaintext
 /css
   ├── general.css
   ├── dashboard.css
@@ -116,7 +116,6 @@ Le frontend est développé en **HTML / CSS / JavaScript**, et le site est dépl
   ├── eventDetail.html
   ├── settings.html
   └── auth.html
-```
 ```
 ##  Liens importants
 
