@@ -1,5 +1,6 @@
 const hamburger = document.getElementById("hamburger");
 const sidebar = document.querySelector(".sidebar");
+const overlay = document.getElementById("overlay");
 
 hamburger.addEventListener("click", () => {
   sidebar.classList.add("open");
