@@ -63,12 +63,12 @@ Le frontend est développé en **HTML / CSS / JavaScript**, et le site est dépl
 - Sécurité via Row Level Security (RLS)
 
 ####  PostgreSQL
-- Table `users`
+- Table `profiles`
 - Table `events`
-- Table `participants`
+- Table `event_member`
 - Table `polls`
 - Table `poll_options`
-- Table `votes`
+- Table `poll_votes`
 - Relations complètes entre utilisateurs / événements / sondages
 
 ---
