@@ -31,7 +31,7 @@ async function loadRecentEvents() {
   }
 
   // On affiche seulement les 3 plus récents
-  const recent = events.slice(0, 3);
+  const recent = events.slice(0, 4);
 
   recent.forEach((event) => {
     const card = document.createElement("div");
