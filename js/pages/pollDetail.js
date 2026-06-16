@@ -71,7 +71,7 @@ async function loadVotes(pollId) {
 
 /* Construire la carte poll-card */
 function renderPollCard(poll, options, votes, userVote) {
-  const container = document.querySelector(".poll-grid");
+  const container = document.getElementById("poll-container");
 
   const voteCounts = {};
   votes.forEach(v => {
@@ -103,6 +103,7 @@ function renderPollCard(poll, options, votes, userVote) {
     </div>
   `;
 }
+
 
 /* Bouton : Ajouter une option */
 function setupAddOptionButton(pollId) {

@@ -57,29 +57,31 @@ async function init() {
 
 async function renderEvent(event, isMember, isCreator, canJoin, canInvite) {
   document.getElementById("event-container").innerHTML = `
+  <div class="event-header">
     <h2>${event.title}</h2>
-    <p>${event.description}</p>
+    <p class="event-description">${event.description}</p>
     <p><strong>Type :</strong> ${event.is_private ? "Privé" : "Public"}</p>
+  </div>
 
-    ${
-      canJoin
-        ? `<button id="join-btn" class="primary-btn">Rejoindre l'événement</button>`
-        : `
-          <h3>Participants</h3>
-          <div class="section-block" id="members-list">Chargement...</div>
+  ${
+    canJoin
+      ? `<button id="join-btn" class="primary-btn">Rejoindre l'événement</button>`
+      : `
+        <h3>Participants</h3>
+        <div class="section-block" id="members-list">Chargement...</div>
 
-          <h3>Sondages</h3>
-          <div class="section-block" id="polls-list">Chargement...</div>
-          <button id="create-poll-btn">Créer un sondage</button>
-        `
-    }
+        <h3>Sondages</h3>
+        <div class="section-block" id="polls-list">Chargement...</div>
+        <button id="create-poll-btn">Créer un sondage</button>
+      `
+  }
 
-    ${
-      canInvite
-        ? `<button id="invite-btn" class="secondary-btn">Inviter un membre</button>`
-        : ""
-    }
-  `;
+  ${
+    canInvite
+      ? `<button id="invite-btn" class="secondary-btn">Inviter un membre</button>`
+      : ""
+  }
+`;
 }
 
 function setupJoinButton(eventId) {
