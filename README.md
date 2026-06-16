@@ -33,7 +33,7 @@ Le frontend est développé en **HTML / CSS / JavaScript**, et le site est dépl
 
 ---
 
-### 🗳️ Sondages intégrés
+###  Sondages intégrés
 - Création d’un sondage lié à un événement
 - Ajout d’options personnalisées
 - Vote pour une option
