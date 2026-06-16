@@ -18,7 +18,7 @@ Le frontend est développé en **HTML / CSS / JavaScript**, et le site est dépl
 
 ---
 
-### 🎉 Gestion des événements
+###  Gestion des événements
 - Création d’un événement (titre, description, type)
 - Types disponibles : **Public** / **Privé**
 - Liste des événements de l’utilisateur
@@ -45,7 +45,7 @@ Le frontend est développé en **HTML / CSS / JavaScript**, et le site est dépl
 
 ---
 
-### 👤 Gestion du profil utilisateur
+###  Gestion du profil utilisateur
 - Affichage du nom et de l’email
 - Modification du nom
 - Sauvegarde dans PostgreSQL
@@ -54,15 +54,15 @@ Le frontend est développé en **HTML / CSS / JavaScript**, et le site est dépl
 
 ---
 
-### 🗄️ Backend & base de données
+###  Backend & base de données
 
-#### 🧩 Supabase
+####  Supabase
 - Authentification (email + Google)
 - Gestion des sessions
 - API REST automatique
 - Sécurité via Row Level Security (RLS)
 
-#### 🗃️ PostgreSQL
+####  PostgreSQL
 - Table `users`
 - Table `events`
 - Table `participants`
@@ -73,7 +73,7 @@ Le frontend est développé en **HTML / CSS / JavaScript**, et le site est dépl
 
 ---
 
-## 📱 Version mobile (en développement)
+##  Version mobile (en développement)
 - Menu hamburger
 - Sidebar coulissante
 - Overlay cliquable pour fermer
@@ -84,7 +84,7 @@ Le frontend est développé en **HTML / CSS / JavaScript**, et le site est dépl
 
 ---
 
-## 🧩 Structure du projet
+##  Structure du projet
 
 ```txt
 /css
